@@ -1,0 +1,1989 @@
+/* Reset a základní styl */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* Tmavý režim (výchozí) */
+body.dark-mode {
+    background: linear-gradient(135deg, #141c34 0%, #1b263b 100%); /* Gradient pozadí */
+    color: #e0e0e0;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Světlý režim */
+body.light-mode {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e0e7ff 100%); /* Gradient pozadí pro světlý režim */
+    color: #333;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Animace pozadí */
+body.dark-mode::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+    opacity: 0.05;
+    z-index: -1;
+    animation: backgroundMove 20s infinite linear;
+}
+
+body.light-mode::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/light-wool.png');
+    opacity: 0.1;
+    z-index: -1;
+    animation: backgroundMove 20s infinite linear;
+}
+
+@keyframes backgroundMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
+}
+
+/* Navigace */
+header {
+    background: #1b263b;
+    padding: 15px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: slideInDown 1s ease-out;
+}
+
+body.light-mode header {
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.trading-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f1c40f;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: glow 2s infinite ease-in-out;
+}
+
+body.light-mode .logo {
+    color: #1e3c72;
+    animation: none;
+}
+
+@keyframes glow {
+    0% { text-shadow: 0 0 5px rgba(241, 196, 15, 0.5); }
+    50% { text-shadow: 0 0 15px rgba(241, 196, 15, 0.8), 0 0 25px rgba(241, 196, 15, 0.5); }
+    100% { text-shadow: 0 0 5px rgba(241, 196, 15, 0.5); }
+}
+
+.nav-search {
+    display: flex;
+    align-items: center;
+    background: #2a3b5a;
+    border-radius: 20px;
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+body.light-mode .nav-search {
+    background: #e0e0e0;
+    animation: none;
+}
+
+.nav-search input {
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-size: 14px;
+    padding: 5px;
+    width: 200px;
+    transition: width 0.5s ease;
+}
+
+body.light-mode .nav-search input {
+    color: #333;
+}
+
+.nav-search input:focus {
+    outline: none;
+    width: 250px;
+}
+
+.nav-search .search-btn {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+body.light-mode .nav-search .search-btn {
+    color: #333;
+}
+
+.nav-search .search-btn:hover {
+    transform: rotate(360deg);
+}
+
+.nav-center {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background: #2a3b5a;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+body.light-mode .nav-btn {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(241, 196, 15, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.nav-btn:hover::before {
+    left: 100%;
+}
+
+.nav-btn.active {
+    background: #f1c40f;
+    color: #1b263b;
+    animation: pulse 1s infinite ease-in-out;
+}
+
+.nav-btn:hover {
+    background: #3e5480;
+    transform: scale(1.05);
+}
+
+body.light-mode .nav-btn:hover {
+    background: #d0d0d0;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info {
+    font-size: 14px;
+    color: #f1c40f;
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .user-info {
+    color: #1e3c72;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+body.light-mode .theme-toggle {
+    color: #333;
+}
+
+.theme-toggle:hover {
+    transform: rotate(360deg);
+}
+
+.logout-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background: #dc3545;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.logout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.logout-btn:hover::before {
+    left: 100%;
+}
+
+.logout-btn:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}
+
+/* Live Ticker */
+.live-ticker {
+    background: #1b263b;
+    padding: 10px 0;
+    overflow: hidden;
+    border-bottom: 1px solid #2a3b5a;
+    animation: fadeIn 1s ease-out;
+}
+
+body.light-mode .live-ticker {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.ticker-content {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerMove 20s infinite linear;
+}
+
+.ticker-content span {
+    margin-right: 40px;
+    font-size: 14px;
+    color: #e0e0e0;
+}
+
+body.light-mode .ticker-content span {
+    color: #333;
+}
+
+.ticker-content span .positive {
+    color: #28a745;
+    animation: blink 1s infinite ease-in-out;
+}
+
+.ticker-content span .negative {
+    color: #dc3545;
+    animation: blink 1s infinite ease-in-out;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Hlavní sekce obchodu */
+#trading {
+    padding: 30px;
+    background: #141c34;
+}
+
+body.light-mode #trading {
+    background: #f5f7fa;
+}
+
+.trading-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Přehled účtu */
+.account-overview {
+    margin-bottom: 30px;
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: zoomIn 1s ease-out;
+}
+
+body.light-mode .account-overview {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.account-header h1 {
+    font-size: 28px;
+    color: #f1c40f;
+    font-weight: 700;
+    animation: bounceIn 1s ease-out;
+}
+
+body.light-mode .account-header h1 {
+    color: #1e3c72;
+}
+
+.account-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    background: #2a3b5a;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+body.light-mode .stat {
+    background: #f5f7fa;
+}
+
+.stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3);
+}
+
+.stat span:first-child {
+    font-size: 14px;
+    color: #a0a0a0;
+    font-weight: 500;
+}
+
+body.light-mode .stat span:first-child {
+    color: #666;
+}
+
+.stat span:last-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+body.light-mode .stat span:last-child {
+    color: #333;
+}
+
+.stat span.positive {
+    color: #28a745;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.stat span.negative {
+    color: #dc3545;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+/* Rychlý přehled trhu */
+.quick-market-overview {
+    margin-bottom: 30px;
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .quick-market-overview {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quick-market-overview h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+    animation: fadeIn 1s ease-out;
+}
+
+body.light-mode .quick-market-overview h2 {
+    color: #1e3c72;
+}
+
+.overview-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.overview-card {
+    background: #2a3b5a;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+    transition: all 0.4s ease;
+    animation: zoomIn 1s ease-out;
+}
+
+body.light-mode .overview-card {
+    background: #f5f7fa;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.overview-card:hover {
+    background: #3e5480;
+    transform: translateY(-5px) rotate(2deg);
+    box-shadow: 0 10px 20px rgba(241, 196, 15, 0.5);
+}
+
+body.light-mode .overview-card:hover {
+    background: #e0e0e0;
+}
+
+.overview-card h3 {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+body.light-mode .overview-card h3 {
+    color: #333;
+}
+
+.overview-card p {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+body.light-mode .overview-card p {
+    color: #666;
+}
+
+.overview-card p .positive {
+    color: #28a745;
+    animation: bounceIn 1s ease-out;
+}
+
+.overview-card p .negative {
+    color: #dc3545;
+    animation: bounceIn 1s ease-out;
+}
+
+/* Hlavní obchodní rozhraní */
+.main-trading-area {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.trading-left {
+    flex: 2;
+    min-width: 600px;
+}
+
+.trading-right {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Graf vývoje ceny */
+.price-chart {
+    margin-bottom: 30px;
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .price-chart {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.price-chart h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .price-chart h2 {
+    color: #1e3c72;
+}
+
+.chart-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.chart-controls select {
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    background: #2a3b5a;
+    color: #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.light-mode .chart-controls select {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.chart-controls select:focus {
+    outline: none;
+    box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+    transform: scale(1.05);
+}
+
+.timeframe-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.timeframe-buttons button {
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #2a3b5a;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+body.light-mode .timeframe-buttons button {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.timeframe-buttons button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(241, 196, 15, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.timeframe-buttons button:hover::before {
+    left: 100%;
+}
+
+.timeframe-buttons button:hover {
+    background: #f1c40f;
+    color: #1b263b;
+    transform: scale(1.1);
+}
+
+.chart-container {
+    background: #141c34;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .chart-container {
+    background: #f5f7fa;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Sekce obchodování */
+.trade-section {
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: zoomIn 1s ease-out;
+}
+
+body.light-mode .trade-section {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.trade-section h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .trade-section h2 {
+    color: #1e3c72;
+}
+
+.trade-form-header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.trade-tab {
+    padding: 8px 25px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background: #2a3b5a;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+body.light-mode .trade-tab {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.trade-tab.active {
+    background: #f1c40f;
+    color: #1b263b;
+    animation: pulse 1s infinite ease-in-out;
+}
+
+.trade-tab:hover {
+    background: #3e5480;
+    transform: scale(1.05);
+}
+
+body.light-mode .trade-tab:hover {
+    background: #d0d0d0;
+}
+
+.trade-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.trade-option {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.trade-option label {
+    font-size: 14px;
+    color: #a0a0a0;
+    font-weight: 500;
+}
+
+body.light-mode .trade-option label {
+    color: #666;
+}
+
+.trade-option input,
+.trade-option select {
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #2a3b5a;
+    color: #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}
+
+body.light-mode .trade-option input,
+body.light-mode .trade-option select {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.trade-option input:focus,
+.trade-option select:focus {
+    outline: none;
+    box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+    transform: scale(1.02);
+}
+
+.trade-button {
+    background: #f1c40f;
+    color: #1b263b;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(241, 196, 15, 0.5);
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.trade-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.trade-button:hover::before {
+    left: 100%;
+}
+
+.trade-button:hover {
+    background: #e67e22;
+    transform: translateY(-5px) rotate(2deg);
+    box-shadow: 0 10px 30px rgba(230, 126, 34, 0.7);
+}
+
+/* Sekce výběru aktiv */
+.market-section {
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .market-section {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.market-section h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .market-section h2 {
+    color: #1e3c72;
+}
+
+.market-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.market-tab {
+    padding: 8px 25px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background: #2a3b5a;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+body.light-mode .market-tab {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.market-tab.active {
+    background: #f1c40f;
+    color: #1b263b;
+    animation: pulse 1s infinite ease-in-out;
+}
+
+.market-tab:hover {
+    background: #3e5480;
+    transform: scale(1.05);
+}
+
+body.light-mode .market-tab:hover {
+    background: #d0d0d0;
+}
+
+.market-content {
+    padding: 10px;
+}
+
+.market-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.market-item {
+    background: #2a3b5a;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.4s ease;
+    animation: slideInRight 0.5s ease-out;
+}
+
+body.light-mode .market-item {
+    background: #f5f7fa;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.market-item:hover {
+    background: #3e5480;
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.5);
+}
+
+body.light-mode .market-item:hover {
+    background: #e0e0e0;
+}
+
+.market-item h3 {
+    font-size: 16px;
+    color: #e0e0e0;
+}
+
+body.light-mode .market-item h3 {
+    color: #333;
+}
+
+.market-item p {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+body.light-mode .market-item p {
+    color: #666;
+}
+
+.market-item p.positive {
+    color: #28a745;
+    animation: bounceIn 1s ease-out;
+}
+
+.market-item p.negative {
+    color: #dc3545;
+    animation: bounceIn 1s ease-out;
+}
+
+.market-item button {
+    padding: 8px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background: #f1c40f;
+    color: #1b263b;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.market-item button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.market-item button:hover::before {
+    left: 100%;
+}
+
+.market-item button:hover {
+    background: #e67e22;
+    transform: scale(1.05) rotate(2deg);
+}
+
+/* Sociální sekce: Top obchodníci */
+.social-section {
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .social-section {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.social-section h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .social-section h2 {
+    color: #1e3c72;
+}
+
+.trader-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.trader-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #2a3b5a;
+    border-radius: 10px;
+    transition: all 0.4s ease;
+    animation: slideInLeft 0.5s ease-out;
+}
+
+body.light-mode .trader-item {
+    background: #f5f7fa;
+}
+
+.trader-item:hover {
+    background: #3e5480;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.5);
+}
+
+body.light-mode .trader-item:hover {
+    background: #e0e0e0;
+}
+
+.trader-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.trader-item img:hover {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.trader-info {
+    flex: 1;
+}
+
+.trader-info h3 {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-bottom: 5px;
+}
+
+body.light-mode .trader-info h3 {
+    color: #333;
+}
+
+.trader-info p {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+body.light-mode .trader-info p {
+    color: #666;
+}
+
+.trader-info p.positive {
+    color: #28a745;
+    animation: bounceIn 1s ease-out;
+}
+
+.trader-info p.negative {
+    color: #dc3545;
+    animation: bounceIn 1s ease-out;
+}
+
+.follow-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background: #28a745;
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.follow-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.follow-btn:hover::before {
+    left: 100%;
+}
+
+.follow-btn:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+/* Tržní indexy */
+.market-indices {
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .market-indices {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.market-indices h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .market-indices h2 {
+    color: #1e3c72;
+}
+
+.indices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.index-card {
+    background: #2a3b5a;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: all 0.4s ease;
+    animation: zoomIn 1s ease-out;
+}
+
+body.light-mode .index-card {
+    background: #f5f7fa;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.index-card:hover {
+    background: #3e5480;
+    transform: translateY(-5px) rotate(-2deg);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.5);
+}
+
+body.light-mode .index-card:hover {
+    background: #e0e0e0;
+}
+
+.index-card h3 {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-bottom: 5px;
+}
+
+body.light-mode .index-card h3 {
+    color: #333;
+}
+
+.index-card p {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+body.light-mode .index-card p {
+    color: #666;
+}
+
+.index-card p .positive {
+    color: #28a745;
+    animation: bounceIn 1s ease-out;
+}
+
+.index-card p .negative {
+    color: #dc3545;
+    animation: bounceIn 1s ease-out;
+}
+
+/* Statistiky portfolia */
+.portfolio-stats {
+    margin-bottom: 30px;
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .portfolio-stats {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-stats h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .portfolio-stats h2 {
+    color: #1e3c72;
+}
+
+.stats-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: #2a3b5a;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+    transition: all 0.4s ease;
+    animation: zoomIn 1s ease-out;
+}
+
+body.light-mode .stat-card {
+    background: #f5f7fa;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover {
+    background: #3e5480;
+    transform: translateY(-5px) rotate(2deg);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.5);
+}
+
+body.light-mode .stat-card:hover {
+    background: #e0e0e0;
+}
+
+.stat-card h3 {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+body.light-mode .stat-card h3 {
+    color: #333;
+}
+
+.stat-card p {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+body.light-mode .stat-card p {
+    color: #666;
+}
+
+.stat-card p .positive {
+    color: #28a745;
+    animation: bounceIn 1s ease-out;
+}
+
+.stat-card p .negative {
+    color: #dc3545;
+    animation: bounceIn 1s ease-out;
+}
+
+/* Sekce novinek */
+.news-section {
+    margin-bottom: 30px;
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .news-section {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.news-section h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .news-section h2 {
+    color: #1e3c72;
+}
+
+.news-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.news-item {
+    background: #2a3b5a;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+    animation: slideInUp 0.5s ease-out;
+}
+
+body.light-mode .news-item {
+    background: #f5f7fa;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.news-item:hover {
+    background: #3e5480;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.5);
+}
+
+body.light-mode .news-item:hover {
+    background: #e0e0e0;
+}
+
+.news-item h3 {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+body.light-mode .news-item h3 {
+    color: #333;
+}
+
+.news-item p {
+    font-size: 14px;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+}
+
+body.light-mode .news-item p {
+    color: #666;
+}
+
+.news-item .read-more {
+    font-size: 14px;
+    color: #f1c40f;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+body.light-mode .news-item .read-more {
+    color: #1e3c72;
+}
+
+.news-item .read-more:hover {
+    color: #e67e22;
+    transform: translateX(5px);
+    display: inline-block;
+}
+
+/* Sekce portfolia */
+.portfolio-section {
+    margin-bottom: 30px;
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .portfolio-section {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-section h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .portfolio-section h2 {
+    color: #1e3c72;
+}
+
+.portfolio-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.portfolio-item {
+    background: #2a3b5a;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: all 0.4s ease;
+    animation: slideInUp 0.5s ease-out;
+}
+
+body.light-mode .portfolio-item {
+    background: #f5f7fa;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-item:hover {
+    background: #3e5480;
+    transform: translateY(-5px) rotate(2deg);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.5);
+}
+
+body.light-mode .portfolio-item:hover {
+    background: #e0e0e0;
+}
+
+.portfolio-item h3 {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+body.light-mode .portfolio-item h3 {
+    color: #333;
+}
+
+.portfolio-item p {
+    font-size: 14px;
+    color: #a0a0a0;
+    margin-bottom: 5px;
+}
+
+body.light-mode .portfolio-item p {
+    color: #666;
+}
+
+.portfolio-item p.positive {
+    color: #28a745;
+    animation: bounceIn 1s ease-out;
+}
+
+.portfolio-item p.negative {
+    color: #dc3545;
+    animation: bounceIn 1s ease-out;
+}
+
+/* Sekce historie transakcí */
+.transactions-section {
+    margin-bottom: 30px;
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .transactions-section {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.transactions-section h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .transactions-section h2 {
+    color: #1e3c72;
+}
+
+.transactions-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 10px;
+    background: #2a3b5a;
+}
+
+body.light-mode .transactions-list {
+    background: #f5f7fa;
+}
+
+.transactions-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.transactions-list::-webkit-scrollbar-track {
+    background: #2a3b5a;
+}
+
+body.light-mode .transactions-list::-webkit-scrollbar-track {
+    background: #f5f7fa;
+}
+
+.transactions-list::-webkit-scrollbar-thumb {
+    background: #f1c40f;
+    border-radius: 4px;
+}
+
+.transactions-list::-webkit-scrollbar-thumb:hover {
+    background: #e67e22;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #3e5480;
+    transition: all 0.4s ease;
+    animation: slideInRight 0.5s ease-out;
+}
+
+body.light-mode .transaction {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction:hover {
+    background: #3e5480;
+    border-radius: 5px;
+    transform: translateX(5px);
+}
+
+body.light-mode .transaction:hover {
+    background: #e0e0e0;
+}
+
+.transaction p {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+body.light-mode .transaction p {
+    color: #666;
+}
+
+.transaction p.positive {
+    color: #28a745;
+    animation: bounceIn 1s ease-out;
+}
+
+.transaction p.negative {
+    color: #dc3545;
+    animation: bounceIn 1s ease-out;
+}
+
+/* Notifikace */
+.notifications {
+    background: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode .notifications {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.notifications h2 {
+    font-size: 22px;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+body.light-mode .notifications h2 {
+    color: #1e3c72;
+}
+
+.notification-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 10px;
+    background: #2a3b5a;
+}
+
+body.light-mode .notification-list {
+    background: #f5f7fa;
+}
+
+.notification-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+    background: #2a3b5a;
+}
+
+body.light-mode .notification-list::-webkit-scrollbar-track {
+    background: #f5f7fa;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+    background: #f1c40f;
+    border-radius: 4px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover {
+    background: #e67e22;
+}
+
+.notification {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #3e5480;
+    transition: all 0.4s ease;
+    animation: slideInLeft 0.5s ease-out;
+}
+
+body.light-mode .notification {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.notification:last-child {
+    border-bottom: none;
+}
+
+.notification:hover {
+    background: #3e5480;
+    border-radius: 5px;
+    transform: translateX(-5px);
+}
+
+body.light-mode .notification:hover {
+    background: #e0e0e0;
+}
+
+.notification p {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+body.light-mode .notification p {
+    color: #666;
+}
+
+/* Push notifikace */
+.push-notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.push-notification {
+    background: #2a3b5a;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #e0e0e0;
+    font-size: 14px;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+body.light-mode .push-notification {
+    background: #ffffff;
+    color: #333;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.push-notification button {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.push-notification button:hover {
+    color: #c82333;
+    transform: scale(1.2);
+}
+
+/* Chatbot */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    background: #1b263b;
+    border-radius: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+body.light-mode .chatbot-container {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-header {
+    background: #f1c40f;
+    color: #1b263b;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.chatbot-header:hover {
+    background: #e67e22;
+}
+
+.chatbot-header .chatbot-toggle {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.chatbot-header:hover .chatbot-toggle {
+    transform: rotate(180deg);
+}
+
+.chatbot-body {
+    display: none; /* Skrytý při načtení */
+    max-height: 400px;
+}
+
+.chatbot-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 15px;
+    background: #2a3b5a;
+}
+
+body.light-mode .chatbot-messages {
+    background: #f5f7fa;
+}
+
+.chatbot-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+    background: #2a3b5a;
+}
+
+body.light-mode .chatbot-messages::-webkit-scrollbar-track {
+    background: #f5f7fa;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background: #f1c40f;
+    border-radius: 3px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+    background: #e67e22;
+}
+
+.chatbot-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: slideInChat 0.5s ease-out;
+}
+
+.chatbot-message.bot-message {
+    background: #f1c40f;
+    color: #1b263b;
+    margin-right: auto;
+}
+
+.chatbot-message.user-message {
+    background: #3e5480;
+    color: #e0e0e0;
+    margin-left: auto;
+}
+
+body.light-mode .chatbot-message.user-message {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.chatbot-input {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: #1b263b;
+}
+
+body.light-mode .chatbot-input {
+    background: #ffffff;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: #2a3b5a;
+    color: #e0e0e0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+body.light-mode .chatbot-input input {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.chatbot-input input:focus {
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.chatbot-input button {
+    padding: 8px 15px;
+    background: #f1c40f;
+    color: #1b263b;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.chatbot-input button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.chatbot-input button:hover::before {
+    left: 100%;
+}
+
+.chatbot-input button:hover {
+    background: #e67e22;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    background: #1b263b;
+    color: #e0e0e0;
+    text-align: center;
+    padding: 50px 20px;
+    position: relative;
+    animation: fadeInUp 1s ease-out;
+}
+
+body.light-mode footer {
+    background: #ffffff;
+    color: #333;
+}
+
+footer p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.social-icons a img {
+    width: 28px;
+    transition: all 0.5s ease;
+}
+
+.social-icons a:hover img {
+    transform: scale(1.3) rotate(15deg);
+    filter: drop-shadow(0 10px 20px rgba(241, 196, 15, 0.5));
+}
+
+/* Animace */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes slideInChat {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+@keyframes zoomIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes tickerMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responzivita */
+@media (max-width: 768px) {
+    header { padding: 10px 20px; }
+    .logo { font-size: 20px; }
+    .nav-search input { width: 150px; }
+    .nav-center { gap: 5px; }
+    .nav-btn { font-size: 12px; padding: 8px 15px; }
+    .nav-right { gap: 10px; }
+    .user-info, .logout-btn, .theme-toggle { font-size: 12px; }
+    #trading { padding: 20px; }
+    .account-header { flex-direction: column; align-items: flex-start; }
+    .account-header h1 { font-size: 24px; }
+    .stat span:first-child { font-size: 12px; }
+    .stat span:last-child { font-size: 14px; }
+    .main-trading-area { flex-direction: column; }
+    .trading-left, .trading-right { min-width: 100%; }
+    .price-chart h2, .trade-section h2, .market-section h2, .portfolio-section h2, .social-section h2, .notifications h2 { font-size: 20px; }
+    .trade-form, .market-content, .transactions-list, .notification-list { padding: 15px; }
+    .market-tab, .trade-tab { font-size: 12px; }
+    .trade-button { padding: 10px 30px; font-size: 14px; }
+    .transaction, .notification { flex-direction: column; gap: 5px; text-align: center; }
+    .chatbot-container {
+        width: 300px;
+        bottom: 10px;
+        right: 10px;
+    }
+}

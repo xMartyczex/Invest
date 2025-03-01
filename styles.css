@@ -1,0 +1,1064 @@
+/* Reset a základní styl */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+
+/* Intro Overlay */
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #fff; /* Bílé pozadí */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 0.8s ease;
+}
+
+.intro-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+.intro-gradient {
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.95), rgba(241, 196, 15, 0.5));
+    width: 100vw;
+    height: 100vh;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    display: flex; /* Aktivace Flexboxu */
+    justify-content: center; /* Zarovnání horizontálně */
+    align-items: center; /* Zarovnání vertikálně */
+}
+
+
+.intro-content {
+    text-align: center;
+    color: white;
+    animation: zoomIn 1.8s ease-out;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    position: relative;
+    z-index: 1;
+}
+
+.intro-title {
+    font-size: 48px; /* Zmenšeno */
+    font-weight: 800;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pulseText 2s infinite;
+}
+
+.intro-subtitle {
+    font-size: 20px; /* Zmenšeno */
+    font-weight: 300;
+    margin: 20px 0 30px;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.intro-animated-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: #f1c40f;
+    border-radius: 50%;
+    animation: bounceDot 1.2s infinite;
+}
+
+.intro-button {
+    background: #1e3c72;
+    color: white;
+    padding: 15px 50px; /* Zmenšeno */
+    border: none;
+    border-radius: 40px;
+    font-size: 18px; /* Zmenšeno */
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(30, 60, 114, 0.7);
+    transition: all 0.6s ease;
+}
+
+.intro-button:hover {
+    transform: scale(1.15) rotateX(15deg);
+    background: #2a5298;
+    box-shadow: 0 15px 50px rgba(42, 82, 152, 0.9);
+}
+
+/* Header a navigace */
+header {
+    position: relative;
+    min-height: 80vh; /* Zmenšeno */
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    overflow: hidden;
+}
+
+.hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    object-fit: cover;
+    opacity: 0.4;
+    z-index: 0;
+    animation: parallax 30s infinite linear;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px; /* Zmenšeno */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(30, 60, 114, 0.9);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    transition: all 0.6s ease;
+}
+
+nav.scrolled {
+    background: rgba(30, 60, 114, 1);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+    transform: scale(1.02);
+}
+
+.logo {
+    font-size: 28px; /* Zmenšeno */
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pulse 2.5s infinite;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 40px; /* Zmenšeno */
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px; /* Zmenšeno */
+    font-weight: 500;
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    background: #f1c40f;
+    bottom: -10px;
+    left: 0;
+    transition: width 0.5s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+nav ul li a:hover {
+    color: #f1c40f;
+    transform: translateY(-3px);
+}
+
+.hero {
+    position: relative;
+    text-align: center;
+    padding: 200px 20px; /* Zmenšeno */
+    z-index: 1;
+    animation: slideIn 1.5s ease-out;
+}
+
+.animated-title {
+    font-size: 60px; /* Zmenšeno */
+    font-weight: 800;
+    text-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    animation: fadeInDown 2s ease-out;
+}
+
+.animated-subtitle {
+    font-size: 24px; /* Zmenšeno */
+    font-weight: 300;
+    margin: 25px 0 50px;
+    animation: fadeInUp 2s ease-out 0.8s;
+    animation-fill-mode: both;
+}
+
+.cta-button {
+    display: inline-block;
+    position: relative;
+    z-index: 100;
+    background: #f1c40f;
+    color: #1e3c72;
+    padding: 15px 50px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 40px;
+    box-shadow: 0 10px 40px rgba(241, 196, 15, 0.7);
+    transition: all 0.6s ease;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.cta-button:hover {
+    transform: translateY(-10px) rotateX(15deg);
+    background: #e67e22;
+    box-shadow: 0 15px 50px rgba(230, 126, 34, 0.9);
+}
+
+.hero-stats {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Zmenšeno */
+    font-size: 18px; /* Zmenšeno */
+    font-weight: 500;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+.hero-stats span {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 20px; /* Zmenšeno */
+    border-radius: 20px;
+    transition: all 0.4s ease;
+}
+
+.hero-stats span:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Sekce výhod */
+#vyhody {
+    padding: 120px 60px; /* Zmenšeno */
+    background: #fff;
+    text-align: center;
+    position: relative;
+}
+
+#vyhody h2 {
+    font-size: 48px; /* Zmenšeno */
+    color: #2a5298;
+    margin-bottom: 80px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    position: relative;
+}
+
+#vyhody h2::after {
+    content: '';
+    width: 120px; /* Zmenšeno */
+    height: 6px;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulseLine 2s infinite;
+}
+
+.benefits-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Zmenšeno */
+    gap: 50px;
+    max-width: 1400px; /* Zmenšeno */
+    margin: 0 auto;
+}
+
+.benefit {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 50px; /* Zmenšeno */
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s ease;
+    transform-style: preserve-3d;
+}
+
+.benefit:hover {
+    transform: translateY(-25px) rotateY(15deg);
+    box-shadow: 0 30px 60px rgba(42, 82, 152, 0.4);
+}
+
+.benefit-image {
+    width: 100%;
+    height: 180px; /* Zmenšeno */
+    object-fit: cover;
+    border-radius: 25px;
+    margin-bottom: 25px;
+    transition: transform 0.5s ease;
+}
+
+.benefit:hover .benefit-image {
+    transform: scale(1.15) rotate(4deg);
+}
+
+.benefit h3 {
+    font-size: 28px; /* Zmenšeno */
+    color: #1e3c72;
+    margin-bottom: 20px;
+}
+
+.benefit p {
+    font-size: 16px; /* Zmenšeno */
+    color: #555;
+}
+
+/* Sekce statistik */
+#stats {
+    padding: 120px 60px; /* Zmenšeno */
+    background: linear-gradient(135deg, #2a5298, #1e3c72);
+    color: white;
+    text-align: center;
+}
+
+.stats-intro {
+    font-size: 20px; /* Zmenšeno */
+    font-weight: 300;
+    margin-bottom: 60px;
+}
+
+#stats h2 {
+    font-size: 48px; /* Zmenšeno */
+    margin-bottom: 50px;
+    position: relative;
+}
+
+#stats h2::after {
+    content: '';
+    width: 120px; /* Zmenšeno */
+    height: 6px;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulseLine 2s infinite;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 100px; /* Zmenšeno */
+    flex-wrap: wrap;
+    max-width: 1400px; /* Zmenšeno */
+    margin: 0 auto;
+}
+
+.stat {
+    width: 240px; /* Zmenšeno */
+    padding: 40px; /* Zmenšeno */
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    transition: all 0.6s ease;
+    transform-style: preserve-3d;
+}
+
+.stat:hover {
+    transform: scale(1.25) rotateX(15deg);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.stat h3 {
+    font-size: 56px; /* Zmenšeno */
+    font-weight: 800;
+    color: #f1c40f;
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.stat p {
+    font-size: 16px; /* Zmenšeno */
+}
+
+/* Sekce strategie */
+#strategie {
+    padding: 120px 60px; /* Zmenšeno */
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.strategie-intro {
+    font-size: 20px; /* Zmenšeno */
+    margin-bottom: 60px;
+    color: #555;
+}
+
+#strategie h2 {
+    font-size: 48px; /* Zmenšeno */
+    color: #2a5298;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+#strategie h2::after {
+    content: '';
+    width: 120px; /* Zmenšeno */
+    height: 6px;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulseLine 2s infinite;
+}
+
+.strategy-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Zmenšeno */
+    gap: 50px;
+    max-width: 1400px; /* Zmenšeno */
+    margin: 0 auto;
+}
+
+.strategy {
+    background: white;
+    padding: 40px; /* Zmenšeno */
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s ease;
+}
+
+.strategy:hover {
+    transform: translateY(-20px) rotateY(10deg);
+    box-shadow: 0 30px 60px rgba(42, 82, 152, 0.4);
+}
+
+.strategy h3 {
+    font-size: 24px; /* Zmenšeno */
+    color: #1e3c72;
+    margin-bottom: 20px;
+}
+
+.strategy p {
+    font-size: 16px; /* Zmenšeno */
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.strategy-return {
+    display: inline-block;
+    background: #f1c40f;
+    color: #1e3c72;
+    padding: 8px 20px; /* Zmenšeno */
+    border-radius: 20px;
+    font-size: 14px; /* Zmenšeno */
+    font-weight: 600;
+    transition: all 0.4s ease;
+}
+
+.strategy:hover .strategy-return {
+    background: #e67e22;
+    transform: scale(1.05);
+}
+
+/* Sekce historie výnosů */
+#performance {
+    padding: 120px 60px; /* Zmenšeno */
+    background: #fff;
+    text-align: center;
+}
+
+.performance-intro {
+    font-size: 20px; /* Zmenšeno */
+    margin-bottom: 60px;
+    color: #555;
+}
+
+#performance h2 {
+    font-size: 48px; /* Zmenšeno */
+    color: #2a5298;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+#performance h2::after {
+    content: '';
+    width: 120px; /* Zmenšeno */
+    height: 6px;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulseLine 2s infinite;
+}
+
+.chart-container {
+    max-width: 1000px; /* Zmenšeno */
+    margin: 0 auto;
+    padding: 30px; /* Zmenšeno */
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 1.5s ease-out;
+}
+
+/* Sekce kalkulačky */
+#kalkulacka {
+    padding: 120px 60px; /* Zmenšeno */
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.kalkulacka-intro {
+    font-size: 20px; /* Zmenšeno */
+    margin-bottom: 60px;
+    color: #555;
+}
+
+#kalkulacka h2 {
+    font-size: 48px; /* Zmenšeno */
+    color: #2a5298;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+#kalkulacka h2::after {
+    content: '';
+    width: 120px; /* Zmenšeno */
+    height: 6px;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulseLine 2s infinite;
+}
+
+.calculator-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px; /* Zmenšeno */
+    max-width: 1200px; /* Zmenšeno */
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.calculator-form {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 50px; /* Zmenšeno */
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    max-width: 500px; /* Zmenšeno */
+}
+
+.calculator-form label {
+    font-size: 18px; /* Zmenšeno */
+    color: #1e3c72;
+    font-weight: 600;
+}
+
+.calculator-form input {
+    padding: 15px; /* Zmenšeno */
+    font-size: 16px; /* Zmenšeno */
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.5s ease;
+}
+
+.calculator-form input:focus {
+    outline: none;
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(42, 82, 152, 0.4);
+}
+
+.calculator-result {
+    background: linear-gradient(135deg, #2a5298, #1e3c72);
+    color: white;
+    padding: 50px; /* Zmenšeno */
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px; /* Zmenšeno */
+    animation: fadeInRight 1.5s ease-out;
+}
+
+.calculator-result h3 {
+    font-size: 28px; /* Zmenšeno */
+    margin-bottom: 40px;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.calculator-result p {
+    font-size: 20px; /* Zmenšeno */
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.calculator-result span {
+    font-weight: 700;
+    color: #f1c40f;
+    text-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    animation: pulseText 1.5s infinite;
+}
+
+.mini-chart {
+    width: 100%;
+    height: 180px; /* Zmenšeno */
+    margin-top: 30px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 20px; /* Zmenšeno */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    animation: zoomIn 1s ease-out;
+    transition: transform 0.5s ease;
+}
+
+.calculator-result:hover .mini-chart {
+    transform: scale(1.03);
+}
+
+/* Sekce novinek */
+#novinky {
+    padding: 120px 60px; /* Zmenšeno */
+    background: #fff;
+    text-align: center;
+}
+
+#novinky h2 {
+    font-size: 48px; /* Zmenšeno */
+    color: #2a5298;
+    margin-bottom: 80px;
+    position: relative;
+}
+
+#novinky h2::after {
+    content: '';
+    width: 120px; /* Zmenšeno */
+    height: 6px;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulseLine 2s infinite;
+}
+
+.news-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Zmenšeno */
+    gap: 50px;
+    max-width: 1400px; /* Zmenšeno */
+    margin: 0 auto;
+}
+
+.news-item {
+    background: white;
+    padding: 50px; /* Zmenšeno */
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s ease;
+}
+
+.news-item:hover {
+    transform: translateY(-20px) rotateY(10deg);
+    box-shadow: 0 30px 60px rgba(42, 82, 152, 0.4);
+}
+
+.news-item h3 {
+    font-size: 24px; /* Zmenšeno */
+    color: #1e3c72;
+    margin-bottom: 20px;
+}
+
+.news-item p {
+    font-size: 16px; /* Zmenšeno */
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.read-more {
+    color: #f1c40f;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.4s ease;
+}
+
+.read-more:hover {
+    color: #e67e22;
+    transform: translateX(10px);
+}
+
+/* Sekce testimonialy */
+#testimonials {
+    padding: 120px 60px; /* Zmenšeno */
+    background: #f9f9f9;
+    text-align: center;
+}
+
+#testimonials h2 {
+    font-size: 48px; /* Zmenšeno */
+    color: #2a5298;
+    margin-bottom: 80px;
+    position: relative;
+}
+
+#testimonials h2::after {
+    content: '';
+    width: 120px; /* Zmenšeno */
+    height: 6px;
+    background: linear-gradient(90deg, #f1c40f, #e67e22);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulseLine 2s infinite;
+}
+
+.testimonials-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Zmenšeno */
+    gap: 50px;
+    max-width: 1400px; /* Zmenšeno */
+    margin: 0 auto;
+}
+
+.testimonial {
+    background: white;
+    padding: 50px; /* Zmenšeno */
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s ease;
+}
+
+.testimonial:hover {
+    transform: translateY(-20px) rotateY(10deg);
+    box-shadow: 0 30px 60px rgba(42, 82, 152, 0.4);
+}
+
+.testimonial-image {
+    width: 120px; /* Zmenšeno */
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 30px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.testimonial:hover .testimonial-image {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.testimonial p {
+    font-size: 18px; /* Zmenšeno */
+    color: #555;
+    font-style: italic;
+    margin-bottom: 25px;
+}
+
+.testimonial h4 {
+    font-size: 20px; /* Zmenšeno */
+    color: #1e3c72;
+    font-weight: 600;
+}
+
+/* CTA Banner */
+#cta-banner {
+    padding: 100px 60px; /* Zmenšeno */
+    background: linear-gradient(135deg, #f1c40f, #e67e22);
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+#cta-banner h2 {
+    font-size: 48px; /* Zmenšeno */
+    margin-bottom: 40px;
+    text-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+#cta-banner p {
+    font-size: 20px; /* Zmenšeno */
+    margin-bottom: 50px;
+}
+
+#cta-banner .animated-cta {
+    animation: bounceCta 2s infinite;
+}
+
+#cta-banner .cta-button {
+    background: #1e3c72;
+    color: white;
+    box-shadow: 0 10px 40px rgba(30, 60, 114, 0.7);
+}
+
+#cta-banner .cta-button:hover {
+    background: #2a5298;
+    box-shadow: 0 15px 50px rgba(42, 82, 152, 0.9);
+}
+
+/* Sekce kontakt */
+#kontakt {
+    padding: 120px 60px; /* Zmenšeno */
+    background: #fff;
+    text-align: center;
+}
+
+#kontakt h2 {
+    font-size: 48px; /* Zmenšeno */
+    color: #2a5298;
+    margin-bottom: 40px;
+}
+
+#kontakt p {
+    font-size: 20px; /* Zmenšeno */
+    margin-bottom: 60px;
+}
+
+.contact-form {
+    max-width: 900px; /* Zmenšeno */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 25px; /* Zmenšeno */
+    font-size: 18px; /* Zmenšeno */
+    border: none;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    transform: scale(1.03);
+    box-shadow: 0 15px 50px rgba(42, 82, 152, 0.4);
+}
+
+.contact-form textarea {
+    resize: none;
+}
+
+.contact-form button {
+    align-self: center;
+}
+
+/* Ticker */
+.ticker {
+    background: #1e3c72;
+    color: white;
+    padding: 15px 0; /* Zmenšeno */
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 500;
+}
+
+.ticker-content {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerMove 20s infinite linear;
+}
+
+.ticker-content span {
+    margin-right: 40px;
+    font-size: 16px; /* Zmenšeno */
+}
+
+/* Floating bubliny */
+.floating-bubbles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -30px;
+    width: 20px; /* Zmenšeno */
+    height: 20px;
+    background: rgba(241, 196, 15, 0.3);
+    border-radius: 50%;
+    animation: floatUp 6s infinite linear;
+    opacity: 0.4;
+}
+
+/* Footer */
+footer {
+    background: #1e3c72;
+    color: white;
+    text-align: center;
+    padding: 70px 20px; /* Zmenšeno */
+    position: relative;
+    margin-bottom: 50px;
+}
+
+footer p {
+    font-size: 18px; /* Zmenšeno */
+    margin-bottom: 30px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 50px; /* Zmenšeno */
+}
+
+.social-icons a img {
+    width: 32px; /* Zmenšeno */
+    transition: all 0.5s ease;
+}
+
+.social-icons a:hover img {
+    transform: scale(1.5) rotate(30deg);
+    filter: drop-shadow(0 15px 30px rgba(241, 196, 15, 0.7));
+}
+
+/* Animace */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-100px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(100px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(100px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes parallax {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-200px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulseText {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulseLine {
+    0% { transform: translateX(-50%) scaleX(1); }
+    50% { transform: translateX(-50%) scaleX(1.2); }
+    100% { transform: translateX(-50%) scaleX(1); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(150px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceDot {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes bounceCta {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes tickerMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0.4; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Responzivita */
+@media (max-width: 768px) {
+    .intro-title { font-size: 40px; }
+    .intro-subtitle { font-size: 18px; }
+    .hero { padding: 150px 20px; }
+    .animated-title { font-size: 44px; }
+    .animated-subtitle { font-size: 20px; }
+    nav { padding: 15px 30px; }
+    nav ul { gap: 20px; }
+    .benefits-container, .testimonials-container, .news-container, .strategy-container { grid-template-columns: 1fr; }
+    .stats-container { gap: 40px; }
+    .calculator-container { flex-direction: column; }
+    .hero-stats { flex-direction: column; gap: 15px; }
+    #cta-banner h2 { font-size: 40px; }
+    #cta-banner p { font-size: 18px; }
+    #performance, #kalkulacka, #vyhody, #novinky, #testimonials, #kontakt, #strategie { padding: 80px 30px; }
+}

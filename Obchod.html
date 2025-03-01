@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obchod - Investice Snadno</title>
+    <link rel="stylesheet" href="obchod-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-mode">
+    <!-- Navigace (inspirováno eToro) -->
+    <header>
+        <nav class="trading-nav">
+            <div class="nav-left">
+                <div class="logo">TradeRiser</div>
+                <div class="nav-search">
+                    <input type="text" placeholder="Hledat aktiva (např. AAPL, BTC...)">
+                    <button class="search-btn">🔍</button>
+                </div>
+            </div>
+            <div class="nav-center">
+                <button class="nav-btn active" onclick="showSection('trading')">Obchod</button>
+                <button class="nav-btn" onclick="showSection('portfolio')">Portfolio</button>
+                <button class="nav-btn" onclick="showSection('watchlist')">Sledované</button>
+                <button class="nav-btn" onclick="showSection('social')">Sociální</button>
+                <button class="nav-btn" onclick="window.location.href='index.html'">Domů</button>
+            </div>
+            <div class="nav-right">
+                <span class="user-info" id="user-name">Investor123</span>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+                <button class="logout-btn" onclick="logout()">Odhlásit se</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Live Ticker -->
+    <div class="live-ticker">
+        <div class="ticker-content">
+            <span>S&P 500: 5,600.32 (+0.45%) | NASDAQ: 18,200.15 (+0.62%) | DAX: 18,500.75 (+0.32%) | FTSE 100: 8,300.45 (-0.15%) | Nikkei 225: 39,200.12 (+0.28%) | BTC: 1,320,000.45 Kč (-0.12%) | ETH: 66,000.82 Kč (+1.15%) | AAPL: 4,180.25 Kč (+0.25%)</span>
+            <span>S&P 500: 5,600.32 (+0.45%) | NASDAQ: 18,200.15 (+0.62%) | DAX: 18,500.75 (+0.32%) | FTSE 100: 8,300.45 (-0.15%) | Nikkei 225: 39,200.12 (+0.28%) | BTC: 1,320,000.45 Kč (-0.12%) | ETH: 66,000.82 Kč (+1.15%) | AAPL: 4,180.25 Kč (+0.25%)</span>
+        </div>
+    </div>
+
+    <!-- Hlavní obsah -->
+    <section id="trading">
+        <div class="trading-container">
+            <!-- Zůstatek a přehled -->
+            <div class="account-overview">
+                <div class="account-header">
+                    <h1>Vítej, Investore! 📈</h1>
+                    <div class="account-stats">
+                        <div class="stat">
+                            <span>Zůstatek:</span>
+                            <span id="balance">150,000.00 Kč</span>
+                        </div>
+                        <div class="stat">
+                            <span>Hodnota portfolia:</span>
+                            <span id="portfolio-value">175,000.00 Kč</span>
+                        </div>
+                        <div class="stat">
+                            <span>Změna za 24h:</span>
+                            <span id="daily-change" class="positive">+3.5% (5,250.00 Kč)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rychlý přehled trhu -->
+            <div class="quick-market-overview">
+                <h2>Rychlý přehled trhu 📈</h2>
+                <div class="overview-cards">
+                    <div class="overview-card">
+                        <h3>Největší růst</h3>
+                        <p>ETH: <span class="positive">+1.15%</span></p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>Největší pokles</h3>
+                        <p>FTSE 100: <span class="negative">-0.15%</span></p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>Nejvíce obchodováno</h3>
+                        <p>BTC: 1,320,000.45 Kč</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hlavní obchodní rozhraní -->
+            <div class="main-trading-area">
+                <!-- Levý panel: Graf a Nákup/Prodej -->
+                <div class="trading-left">
+                    <!-- Graf vývoje ceny -->
+                    <div class="price-chart">
+                        <h2>Vývoj ceny 📊</h2>
+                        <div class="chart-controls">
+                            <select id="asset-selector" onchange="updateChart()">
+                                <option value="AAPL">Apple (AAPL)</option>
+                                <option value="TSLA">Tesla (TSLA)</option>
+                                <option value="MSFT">Microsoft (MSFT)</option>
+                                <option value="GOOGL">Google (GOOGL)</option>
+                                <option value="AMZN">Amazon (AMZN)</option>
+                                <option value="BTC">Bitcoin (BTC)</option>
+                                <option value="ETH">Ethereum (ETH)</option>
+                                <option value="BNB">Binance Coin (BNB)</option>
+                                <option value="XRP">Ripple (XRP)</option>
+                                <option value="SP500">S&P 500</option>
+                                <option value="NASDAQ">NASDAQ</option>
+                                <option value="DAX">DAX</option>
+                                <option value="FTSE100">FTSE 100</option>
+                                <option value="N225">Nikkei 225</option>
+                            </select>
+                            <div class="timeframe-buttons">
+                                <button onclick="changeTimeframe('15S')">15S</button>
+                                <button onclick="changeTimeframe('1H')">1H</button>
+                                <button onclick="changeTimeframe('1D')">1D</button>
+                                <button onclick="changeTimeframe('1W')">1W</button>
+                                <button onclick="changeTimeframe('1M')">1M</button>
+                                <button onclick="changeTimeframe('3M')">3M</button>
+                                <button onclick="changeTimeframe('1Y')">1Y</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Nákup/Prodej -->
+                    <div class="trade-section">
+                        <h2>Obchoduj 🛠️</h2>
+                        <div class="trade-form">
+                            <div class="trade-form-header">
+                                <button class="trade-tab active" onclick="switchTab('buy')">Nákup</button>
+                                <button class="trade-tab" onclick="switchTab('sell')">Prodej</button>
+                            </div>
+                            <div class="trade-form-content" id="trade-form-content">
+                                <div class="trade-option">
+                                    <label for="trade-amount">Částka (Kč):</label>
+                                    <input type="number" id="trade-amount" placeholder="Zadej částku" min="100" step="0.01" required>
+                                </div>
+                                <div class="trade-option">
+                                    <label for="trade-asset">Aktivum:</label>
+                                    <select id="trade-asset">
+                                        <option value="AAPL">Apple (AAPL)</option>
+                                        <option value="TSLA">Tesla (TSLA)</option>
+                                        <option value="MSFT">Microsoft (MSFT)</option>
+                                        <option value="GOOGL">Google (GOOGL)</option>
+                                        <option value="AMZN">Amazon (AMZN)</option>
+                                        <option value="BTC">Bitcoin (BTC)</option>
+                                        <option value="ETH">Ethereum (ETH)</option>
+                                        <option value="BNB">Binance Coin (BNB)</option>
+                                        <option value="XRP">Ripple (XRP)</option>
+                                        <option value="SP500">S&P 500</option>
+                                        <option value="NASDAQ">NASDAQ</option>
+                                        <option value="DAX">DAX</option>
+                                        <option value="FTSE100">FTSE 100</option>
+                                        <option value="N225">Nikkei 225</option>
+                                    </select>
+                                </div>
+                                <button onclick="executeTrade()" class="trade-button">Provést obchod 📈</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pravý panel: Výběr aktiv a další info -->
+                <div class="trading-right">
+                    <div class="market-section">
+                        <h2>Vyber aktivum 📉</h2>
+                        <div class="market-tabs">
+                            <button class="market-tab active" onclick="switchMarketTab('stocks')">Akcie</button>
+                            <button class="market-tab" onclick="switchMarketTab('crypto')">Kryptoměny</button>
+                            <button class="market-tab" onclick="switchMarketTab('indices')">Indexy</button>
+                        </div>
+                        <div class="market-content" id="market-content">
+                            <div class="market-items">
+                                <div class="market-item" data-asset="AAPL">
+                                    <h3>Apple (AAPL)</h3>
+                                    <p>Cena: <span class="price">4180.25 Kč</span></p>
+                                    <p class="change">0%</p>
+                                    <button onclick="selectAsset('AAPL')">Vybrat</button>
+                                </div>
+                                <div class="market-item" data-asset="TSLA">
+                                    <h3>Tesla (TSLA)</h3>
+                                    <p>Cena: <span class="price">5500.75 Kč</span></p>
+                                    <p class="change">0%</p>
+                                    <button onclick="selectAsset('TSLA')">Vybrat</button>
+                                </div>
+                                <div class="market-item" data-asset="MSFT">
+                                    <h3>Microsoft (MSFT)</h3>
+                                    <p>Cena: <span class="price">9020.50 Kč</span></p>
+                                    <p class="change">0%</p>
+                                    <button onclick="selectAsset('MSFT')">Vybrat</button>
+                                </div>
+                                <div class="market-item" data-asset="GOOGL">
+                                    <h3>Google (GOOGL)</h3>
+                                    <p>Cena: <span class="price">3100.15 Kč</span></p>
+                                    <p class="change">0%</p>
+                                    <button onclick="selectAsset('GOOGL')">Vybrat</button>
+                                </div>
+                                <div class="market-item" data-asset="AMZN">
+                                    <h3>Amazon (AMZN)</h3>
+                                    <p>Cena: <span class="price">3600.30 Kč</span></p>
+                                    <p class="change">0%</p>
+                                    <button onclick="selectAsset('AMZN')">Vybrat</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sociální prvek: Top obchodníci -->
+                    <div class="social-section">
+                        <h2>Top obchodníci 🏆</h2>
+                        <div class="trader-list">
+                            <div class="trader-item">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" alt="Trader 1">
+                                <div class="trader-info">
+                                    <h3>Jan Novák</h3>
+                                    <p>Výnos: <span class="positive">+45.12%</span></p>
+                                </div>
+                                <button class="follow-btn">Sledovat</button>
+                            </div>
+                            <div class="trader-item">
+                                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7" alt="Trader 2">
+                                <div class="trader-info">
+                                    <h3>Eva Kovářová</h3>
+                                    <p>Výnos: <span class="positive">+32.75%</span></p>
+                                </div>
+                                <button class="follow-btn">Sledovat</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tržní indexy -->
+                    <div class="market-indices">
+                        <h2>Tržní indexy 🌍</h2>
+                        <div class="indices-grid">
+                            <div class="index-card" data-asset="SP500">
+                                <h3>S&P 500</h3>
+                                <p>5,600.32 <span class="positive">+0.45%</span></p>
+                            </div>
+                            <div class="index-card" data-asset="NASDAQ">
+                                <h3>NASDAQ</h3>
+                                <p>18,200.15 <span class="positive">+0.62%</span></p>
+                            </div>
+                            <div class="index-card" data-asset="DAX">
+                                <h3>DAX</h3>
+                                <p>18,500.75 <span class="positive">+0.32%</span></p>
+                            </div>
+                            <div class="index-card" data-asset="FTSE100">
+                                <h3>FTSE 100</h3>
+                                <p>8,300.45 <span class="negative">-0.15%</span></p>
+                            </div>
+                            <div class="index-card" data-asset="N225">
+                                <h3>Nikkei 225</h3>
+                                <p>39,200.12 <span class="positive">+0.28%</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistiky portfolia -->
+            <div class="portfolio-stats">
+                <h2>Statistiky portfolia 📊</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Největší zisk</h3>
+                        <p>AAPL: <span class="positive">+12.34%</span></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Největší ztráta</h3>
+                        <p>BTC: <span class="negative">-5.67%</span></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Celkový výnos</h3>
+                        <p><span class="positive">+8.92%</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sekce novinek -->
+            <div class="news-section">
+                <h2>Novinky ze trhu 📰</h2>
+                <div class="news-items">
+                    <div class="news-item">
+                        <h3>Bitcoin překročil 60,000 USD</h3>
+                        <p>Kryptoměna Bitcoin dosáhla nového milníku a překročila hodnotu 60,000 USD...</p>
+                        <a href="#" class="read-more">Číst více</a>
+                    </div>
+                    <div class="news-item">
+                        <h3>Apple oznamuje nový produkt</h3>
+                        <p>Apple představil nový iPhone, což zvýšilo jeho akcie o 0.25%...</p>
+                        <a href="#" class="read-more">Číst více</a>
+                    </div>
+                    <div class="news-item">
+                        <h3>NASDAQ dosahuje rekordní úrovně</h3>
+                        <p>Technologický index NASDAQ roste díky silnému výkonu technologických akcií...</p>
+                        <a href="#" class="read-more">Číst více</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Přehled portfolia -->
+            <div class="portfolio-section">
+                <h2>Moje portfolio 📋</h2>
+                <div class="portfolio-items" id="portfolio-items">
+                    <div class="portfolio-item" data-asset="AAPL">
+                        <h3>Apple (AAPL)</h3>
+                        <p>Hodnota: 50000.00 Kč</p>
+                        <p class="positive">+12.34%</p>
+                    </div>
+                    <div class="portfolio-item" data-asset="BTC">
+                        <h3>Bitcoin (BTC)</h3>
+                        <p>Hodnota: 30000.00 Kč</p>
+                        <p class="negative">-5.67%</p>
+                    </div>
+                    <div class="portfolio-item" data-asset="ETH">
+                        <h3>Ethereum (ETH)</h3>
+                        <p>Hodnota: 20000.00 Kč</p>
+                        <p class="positive">+8.12%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historie transakcí -->
+            <div class="transactions-section">
+                <h2>Historie transakcí 🕒</h2>
+                <div class="transactions-list" id="transactions-list">
+                    <div class="transaction">
+                        <p>Nákup AAPL – 10 000.00 Kč</p>
+                        <p>15. 3. 2025, 14:30</p>
+                        <p class="positive">+5.23%</p>
+                    </div>
+                    <div class="transaction">
+                        <p>Prodej BTC – 15 000.00 Kč</p>
+                        <p>14. 3. 2025, 09:15</p>
+                        <p class="negative">-3.45%</p>
+                    </div>
+                    <div class="transaction">
+                        <p>Nákup ETH – 8 000.00 Kč</p>
+                        <p>13. 3. 2025, 16:45</p>
+                        <p class="positive">+10.78%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifikace -->
+            <div class="notifications">
+                <h2>Notifikace 🔔</h2>
+                <div class="notification-list" id="notification-list">
+                    <div class="notification">
+                        <p>Bitcoin (BTC) klesl o 0.12%!</p>
+                        <p>1. 3. 2025, 14:15</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Push notifikace -->
+            <div id="push-notifications" class="push-notifications"></div>
+
+            <!-- Chatbot -->
+            <div class="chatbot-container">
+                <div class="chatbot-header" onclick="toggleChatbot()">
+                    <span>Chatbot 🤖</span>
+                    <span class="chatbot-toggle">▼</span>
+                </div>
+                <div class="chatbot-body" id="chatbot-body">
+                    <div class="chatbot-messages" id="chatbot-messages">
+                        <div class="chatbot-message bot-message">Ahoj! Jsem tvůj AI pomocník. Jak ti mohu pomoci?</div>
+                    </div>
+                    <div class="chatbot-input">
+                        <input type="text" id="chatbot-input" placeholder="Napiš zprávu..." onkeypress="if(event.key === 'Enter') sendChatbotMessage()">
+                        <button onclick="sendChatbotMessage()">Odeslat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Investice Snadno. Všechna práva vyhrazena. Sleduj nás! 🌐</p>
+        <div class="social-icons">
+            <a href="#"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook"></a>
+            <a href="#"><img src="https://img.icons8.com/ios-filled/24/ffffff/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram"></a>
+        </div>
+    </footer>
+
+    <!-- JavaScript pro interaktivitu -->
+    <script>
+        let priceChart;
+        let balance = 150000.00;
+        let portfolioValue = 175000.00;
+        let portfolio = {
+            'AAPL': { quantity: 10, value: 50000.00 },
+            'BTC': { quantity: 1, value: 30000.00 },
+            'ETH': { quantity: 2, value: 20000.00 }
+        };
+        let timeframe = '1D';
+        let assetData = {
+            'AAPL': {
+                price: 4180.25,
+                '15S': Array(7).fill(4180.25),
+                '1H': Array(7).fill(4180.25),
+                '1D': [4160.45, 4150.12, 4170.89, 4140.56, 4130.78, 4150.34, 4180.25],
+                '1W': [4100.67, 4080.23, 4090.45, 4110.89, 4120.12, 4140.56, 4180.25],
+                '1M': [4000.12, 4020.56, 3980.78, 4050.34, 4100.67, 4140.89, 4180.25],
+                '3M': [3900.45, 3920.78, 3950.12, 3980.56, 4000.89, 4050.23, 4180.25],
+                '1Y': [3500.78, 3600.12, 3700.45, 3800.89, 3900.23, 4000.56, 4180.25]
+            },
+            'TSLA': {
+                price: 5500.75,
+                '15S': Array(7).fill(5500.75),
+                '1H': Array(7).fill(5500.75),
+                '1D': [5480.12, 5460.45, 5490.78, 5450.23, 5430.56, 5470.89, 5500.75],
+                '1W': [5400.89, 5380.23, 5420.56, 5440.78, 5460.12, 5480.45, 5500.75],
+                '1M': [5300.45, 5320.78, 5280.12, 5350.56, 5400.89, 5450.23, 5500.75],
+                '3M': [5200.78, 5220.12, 5250.45, 5280.89, 5300.23, 5350.56, 5500.75],
+                '1Y': [4800.12, 4900.45, 5000.78, 5100.23, 5200.56, 5300.89, 5500.75]
+            },
+            'MSFT': {
+                price: 9020.50,
+                '15S': Array(7).fill(9020.50),
+                '1H': Array(7).fill(9020.50),
+                '1D': [9000.78, 8980.12, 9020.45, 8960.89, 8940.23, 8990.56, 9020.50],
+                '1W': [8900.23, 8880.56, 8920.78, 8940.12, 8960.45, 8980.89, 9020.50],
+                '1M': [8800.56, 8820.89, 8780.23, 8850.45, 8900.78, 8950.12, 9020.50],
+                '3M': [8700.89, 8720.23, 8750.56, 8780.78, 8800.12, 8850.45, 9020.50],
+                '1Y': [8200.23, 8300.56, 8400.89, 8500.12, 8600.45, 8700.78, 9020.50]
+            },
+            'GOOGL': {
+                price: 3100.15,
+                '15S': Array(7).fill(3100.15),
+                '1H': Array(7).fill(3100.15),
+                '1D': [3090.23, 3080.56, 3100.89, 3070.12, 3060.45, 3090.78, 3100.15],
+                '1W': [3050.78, 3040.12, 3060.45, 3070.89, 3080.23, 3090.56, 3100.15],
+                '1M': [3000.45, 3010.89, 2990.23, 3020.56, 3040.78, 3060.12, 3100.15],
+                '3M': [2950.89, 2960.23, 2980.56, 3000.78, 3020.12, 3050.45, 3100.15],
+                '1Y': [2700.23, 2750.56, 2800.89, 2850.12, 2900.45, 2950.78, 3100.15]
+            },
+            'AMZN': {
+                price: 3600.30,
+                '15S': Array(7).fill(3600.30),
+                '1H': Array(7).fill(3600.30),
+                '1D': [3590.45, 3580.78, 3600.12, 3570.56, 3560.89, 3590.23, 3600.30],
+                '1W': [3550.12, 3540.45, 3560.78, 3570.89, 3580.23, 3590.56, 3600.30],
+                '1M': [3500.78, 3510.12, 3490.45, 3520.89, 3540.23, 3560.56, 3600.30],
+                '3M': [3450.12, 3460.45, 3480.78, 3500.89, 3520.23, 3550.56, 3600.30],
+                '1Y': [3200.45, 3250.78, 3300.12, 3350.56, 3400.89, 3450.23, 3600.30]
+            },
+            'BTC': {
+                price: 1320000.45,
+                '15S': Array(7).fill(1320000.45),
+                '1H': Array(7).fill(1320000.45),
+                '1D': [1315000.12, 1318000.45, 1312000.78, 1320000.89, 1316000.23, 1319000.56, 1320000.45],
+                '1W': [1300000.78, 1295000.12, 1305000.45, 1310000.89, 1315000.23, 1318000.56, 1320000.45],
+                '1M': [1280000.45, 1275000.78, 1285000.12, 1290000.56, 1295000.89, 1300000.23, 1320000.45],
+                '3M': [1260000.78, 1255000.12, 1265000.45, 1270000.89, 1275000.23, 1280000.56, 1320000.45],
+                '1Y': [1100000.12, 1120000.45, 1150000.78, 1200000.89, 1250000.23, 1270000.56, 1320000.45]
+            },
+            'ETH': {
+                price: 66000.82,
+                '15S': Array(7).fill(66000.82),
+                '1H': Array(7).fill(66000.82),
+                '1D': [65800.45, 65700.78, 65900.12, 65600.56, 65500.89, 65800.23, 66000.82],
+                '1W': [65000.12, 64800.45, 65200.78, 65400.89, 65600.23, 65800.56, 66000.82],
+                '1M': [64000.78, 64200.12, 63800.45, 64500.89, 65000.23, 65500.56, 66000.82],
+                '3M': [63000.12, 63200.45, 63500.78, 63800.89, 64000.23, 64500.56, 66000.82],
+                '1Y': [55000.45, 56000.78, 57000.12, 58000.56, 60000.89, 62000.23, 66000.82]
+            },
+            'BNB': {
+                price: 12100.65,
+                '15S': Array(7).fill(12100.65),
+                '1H': Array(7).fill(12100.65),
+                '1D': [12050.12, 12030.45, 12080.78, 12020.89, 12000.23, 12060.56, 12100.65],
+                '1W': [11900.78, 11850.12, 11950.45, 12000.89, 12030.23, 12060.56, 12100.65],
+                '1M': [11700.45, 11650.78, 11750.12, 11800.56, 11850.89, 11900.23, 12100.65],
+                '3M': [11500.78, 11450.12, 11550.45, 11600.89, 11650.23, 11700.56, 12100.65],
+                '1Y': [10000.12, 10200.45, 10500.78, 10800.89, 11000.23, 11200.56, 12100.65]
+            },
+            'XRP': {
+                price: 13.24,
+                '15S': Array(7).fill(13.24),
+                '1H': Array(7).fill(13.24),
+                '1D': [13.11, 13.02, 13.23, 13.04, 12.96, 13.17, 13.24],
+                '1W': [12.81, 12.72, 12.93, 13.02, 13.14, 13.18, 13.24],
+                '1M': [12.54, 12.41, 12.63, 12.71, 12.82, 12.96, 13.24],
+                '3M': [12.21, 12.12, 12.34, 12.45, 12.56, 12.67, 13.24],
+                '1Y': [10.02, 10.23, 10.54, 10.87, 11.01, 11.54, 13.24]
+            },
+            'SP500': {
+                price: 5600.32,
+                '15S': Array(7).fill(5600.32),
+                '1H': Array(7).fill(5600.32),
+                '1D': [5580.45, 5570.78, 5590.12, 5560.56, 5550.89, 5580.23, 5600.32],
+                '1W': [5500.12, 5480.45, 5520.78, 5540.89, 5560.23, 5580.56, 5600.32],
+                '1M': [5400.78, 5420.12, 5380.45, 5450.89, 5500.23, 5550.56, 5600.32],
+                '3M': [5300.12, 5320.45, 5350.78, 5380.89, 5400.23, 5450.56, 5600.32],
+                '1Y': [5000.45, 5100.78, 5200.12, 5300.56, 5400.89, 5500.23, 5600.32]
+            },
+            'NASDAQ': {
+                price: 18200.15,
+                '15S': Array(7).fill(18200.15),
+                '1H': Array(7).fill(18200.15),
+                '1D': [18150.23, 18130.56, 18180.89, 18120.12, 18100.45, 18160.78, 18200.15],
+                '1W': [17900.78, 17850.12, 17950.45, 18000.89, 18050.23, 18100.56, 18200.15],
+                '1M': [17500.45, 17550.78, 17450.12, 17600.56, 17750.89, 17900.23, 18200.15],
+                '3M': [17000.78, 17100.12, 17200.45, 17300.89, 17400.23, 17500.56, 18200.15],
+                '1Y': [16000.12, 16200.45, 16500.78, 16800.89, 17000.23, 17200.56, 18200.15]
+            },
+            'DAX': {
+                price: 18500.75,
+                '15S': Array(7).fill(18500.75),
+                '1H': Array(7).fill(18500.75),
+                '1D': [18450.12, 18430.45, 18480.78, 18420.89, 18400.23, 18460.56, 18500.75],
+                '1W': [18200.78, 18150.12, 18250.45, 18300.89, 18350.23, 18400.56, 18500.75],
+                '1M': [17800.45, 17850.78, 17750.12, 17900.56, 18050.89, 18200.23, 18500.75],
+                '3M': [17400.78, 17500.12, 17600.45, 17700.89, 17800.23, 17900.56, 18500.75],
+                '1Y': [16000.12, 16200.45, 16500.78, 16800.89, 17000.23, 17200.56, 18500.75]
+            },
+            'FTSE100': {
+                price: 8300.45,
+                '15S': Array(7).fill(8300.45),
+                '1H': Array(7).fill(8300.45),
+                '1D': [8320.78, 8310.12, 8330.45, 8300.89, 8290.23, 8315.56, 8300.45],
+                '1W': [8360.12, 8350.45, 8370.78, 8340.89, 8330.23, 8320.56, 8300.45],
+                '1M': [8400.45, 8410.78, 8390.12, 8420.56, 8370.89, 8340.23, 8300.45],
+                '3M': [8450.78, 8460.12, 8470.45, 8440.89, 8420.23, 8390.56, 8300.45],
+                '1Y': [8600.12, 8580.45, 8550.78, 8500.89, 8450.23, 8400.56, 8300.45]
+            },
+            'N225': {
+                price: 39200.12,
+                '15S': Array(7).fill(39200.12),
+                '1H': Array(7).fill(39200.12),
+                '1D': [39150.23, 39130.56, 39180.89, 39120.12, 39100.45, 39160.78, 39200.12],
+                '1W': [38900.78, 38850.12, 38950.45, 39000.89, 39050.23, 39100.56, 39200.12],
+                '1M': [38500.45, 38550.78, 38450.12, 38600.56, 38750.89, 38900.23, 39200.12],
+                '3M': [38000.78, 38100.12, 38200.45, 38300.89, 38400.23, 38500.56, 39200.12],
+                '1Y': [36000.12, 36200.45, 36500.78, 36800.89, 37000.23, 37200.56, 39200.12]
+            }
+        };
+
+        // Načtení dat podle uživatele při načtení stránky
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username') || 'Investor123';
+            document.getElementById('user-name').textContent = username;
+
+            // Načtení dat z sessionStorage
+            const userData = JSON.parse(sessionStorage.getItem(`userData_${username}`));
+            if (userData) {
+                balance = userData.balance || 150000.00;
+                portfolioValue = userData.portfolioValue || 175000.00;
+                portfolio = userData.portfolio || {
+                    'AAPL': { quantity: 10, value: 50000.00 },
+                    'BTC': { quantity: 1, value: 30000.00 },
+                    'ETH': { quantity: 2, value: 20000.00 }
+                };
+                document.getElementById('balance').textContent = `${balance.toFixed(2)} Kč`;
+                document.getElementById('portfolio-value').textContent = `${portfolioValue.toFixed(2)} Kč`;
+                const change = ((portfolioValue - 175000) / 175000 * 100).toFixed(2);
+                document.getElementById('daily-change').textContent = `${change}% (${(portfolioValue - 175000).toFixed(2)} Kč)`;
+                document.getElementById('daily-change').className = change >= 0 ? 'positive' : 'negative';
+
+                // Aktualizace portfolia
+                const portfolioItems = document.getElementById('portfolio-items');
+                portfolioItems.innerHTML = '';
+                Object.keys(portfolio).forEach(asset => {
+                    const change = ((portfolio[asset].value - (portfolio[asset].quantity * assetData[asset][timeframe][0])) / (portfolio[asset].quantity * assetData[asset][timeframe][0]) * 100).toFixed(2);
+                    portfolioItems.innerHTML += `
+                        <div class="portfolio-item" data-asset="${asset}">
+                            <h3>${asset}</h3>
+                            <p>Hodnota: ${portfolio[asset].value.toFixed(2)} Kč</p>
+                            <p class="${change >= 0 ? 'positive' : 'negative'}">${change}%</p>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        // Otevírací hodiny trhu (NYSE/NASDAQ: 9:30–16:00 EST, což je 15:30–22:00 CET)
+        function isMarketOpen() {
+            const now = new Date();
+            const cetOffset = 1; // CET je UTC+1
+            const hours = now.getUTCHours() + cetOffset;
+            const minutes = now.getUTMinutes();
+            const day = now.getUTCDay();
+            const marketStart = 15.5; // 15:30 CET
+            const marketEnd = 22; // 22:00 CET
+            return day >= 1 && day <= 5 && hours >= marketStart && (hours < marketEnd || (hours === marketEnd && minutes === 0));
+        }
+
+        // Generování časových popisků podle časového rámce
+        function getTimeLabels(timeframe, count) {
+            const labels = [];
+            const now = new Date();
+            if (timeframe === '15S') {
+                for (let i = count - 1; i >= 0; i--) {
+                    const time = new Date(now.getTime() - i * 15 * 1000);
+                    labels.push(time.toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+                }
+            } else if (timeframe === '1H') {
+                for (let i = count - 1; i >= 0; i--) {
+                    const time = new Date(now.getTime() - i * 10 * 60 * 1000);
+                    labels.push(time.toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' }));
+                }
+            } else if (timeframe === '1D') {
+                for (let i = count - 1; i >= 0; i--) {
+                    const time = new Date(now.getTime() - i * 4 * 60 * 60 * 1000);
+                    labels.push(time.toLocaleString('cs-CZ', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'numeric' }));
+                }
+            } else if (timeframe === '1W') {
+                for (let i = count - 1; i >= 0; i--) {
+                    const time = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+                    labels.push(time.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric' }));
+                }
+            } else if (timeframe === '1M') {
+                for (let i = count - 1; i >= 0; i--) {
+                    const time = new Date(now.getTime() - i * 4 * 24 * 60 * 60 * 1000);
+                    labels.push(time.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric' }));
+                }
+            } else if (timeframe === '3M') {
+                for (let i = count - 1; i >= 0; i--) {
+                    const time = new Date(now.getTime() - i * 12 * 24 * 60 * 60 * 1000);
+                    labels.push(time.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric' }));
+                }
+            } else if (timeframe === '1Y') {
+                for (let i = count - 1; i >= 0; i--) {
+                    const time = new Date(now.getTime() - i * 52 * 24 * 60 * 60 * 1000);
+                    labels.push(time.toLocaleDateString('cs-CZ', { month: 'numeric', year: 'numeric' }));
+                }
+            }
+            return labels;
+        }
+
+        // Push notifikace
+        function showPushNotification(message) {
+            const notificationContainer = document.getElementById('push-notifications');
+            const notification = document.createElement('div');
+            notification.className = 'push-notification';
+            notification.innerHTML = `
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()">✖</button>
+            `;
+            notificationContainer.appendChild(notification);
+
+            // Automatické odstranění po 5 sekundách
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Fiktivní simulace burzy s většími výkyvy
+        function updatePrices() {
+            const marketOpen = isMarketOpen();
+            Object.keys(assetData).forEach(asset => {
+                const item = document.querySelector(`.market-item[data-asset="${asset}"]`);
+                let price = assetData[asset].price;
+
+                if (marketOpen || asset === 'BTC' || asset === 'ETH' || asset === 'BNB' || asset === 'XRP' || asset.startsWith('SP500') || asset.startsWith('NASDAQ') || asset.startsWith('DAX') || asset.startsWith('FTSE100') || asset.startsWith('N225')) {
+                    // Větší výkyvy (±5% změna namísto ±2%)
+                    const fluctuation = (Math.random() - 0.5) * 0.05 * price;
+                    price += fluctuation;
+                    assetData[asset].price = price;
+
+                    // Aktualizace podle časového rámce
+                    if (timeframe === '15S') {
+                        assetData[asset]['15S'].push(price);
+                        if (assetData[asset]['15S'].length > 7) assetData[asset]['15S'].shift();
+                    } else if (timeframe === '1H') {
+                        assetData[asset]['1H'].push(price);
+                        if (assetData[asset]['1H'].length > 7) assetData[asset]['1H'].shift();
+                    } else if (timeframe === '1D') {
+                        assetData[asset]['1D'].push(price);
+                        if (assetData[asset]['1D'].length > 7) assetData[asset]['1D'].shift();
+                    } else if (timeframe === '1W') {
+                        assetData[asset]['1W'].push(price);
+                        if (assetData[asset]['1W'].length > 7) assetData[asset]['1W'].shift();
+                    } else if (timeframe === '1M') {
+                        assetData[asset]['1M'].push(price);
+                        if (assetData[asset]['1M'].length > 7) assetData[asset]['1M'].shift();
+                    } else if (timeframe === '3M') {
+                        assetData[asset]['3M'].push(price);
+                        if (assetData[asset]['3M'].length > 7) assetData[asset]['3M'].shift();
+                    } else if (timeframe === '1Y') {
+                        assetData[asset]['1Y'].push(price);
+                        if (assetData[asset]['1Y'].length > 7) assetData[asset]['1Y'].shift();
+                    }
+                }
+
+                const change = ((price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0] * 100).toFixed(2);
+                if (item) {
+                    item.querySelector('.price').textContent = `${price.toFixed(2)} Kč`;
+                    item.querySelector('.change').textContent = `${change}%`;
+                    item.querySelector('.change').className = 'change ' + (change >= 0 ? 'positive' : 'negative');
+                }
+
+                // Aktualizace indexů v tickeru a přehledu
+                const indexCard = document.querySelector(`.index-card[data-asset="${asset}"]`);
+                if (indexCard) {
+                    indexCard.querySelector('p').innerHTML = `${price.toFixed(2)} <span class="${change >= 0 ? 'positive' : 'negative'}">${change}%</span>`;
+                }
+
+                // Push notifikace při větší změně
+                if (Math.abs(change) > 3) { // Zvýšený práh pro notifikace
+                    const now = new Date();
+                    const notificationList = document.getElementById('notification-list');
+                    notificationList.innerHTML = `
+                        <div class="notification">
+                            <p>${asset} se změnil o ${change}%!</p>
+                            <p>${now.toLocaleDateString('cs-CZ')} ${now.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'})}</p>
+                        </div>
+                    ` + notificationList.innerHTML;
+
+                    // Push notifikace
+                    showPushNotification(`${asset} se změnil o ${change}%!`);
+
+                    // Upozornění chatbota
+                    const messages = document.getElementById('chatbot-messages');
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'chatbot-message bot-message';
+                    botMessage.textContent = `Pozor! ${asset} se změnil o ${change}%! Možná je čas jednat.`;
+                    messages.appendChild(botMessage);
+                    messages.scrollTop = messages.scrollHeight;
+                }
+
+                updateChart();
+            });
+        }
+
+        // Aktualizace grafu
+        function updateChart() {
+            const asset = document.getElementById('asset-selector').value;
+            const data = assetData[asset][timeframe];
+            if (priceChart) priceChart.destroy();
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: getTimeLabels(timeframe, data.length),
+                    datasets: [{
+                        label: asset,
+                        data: data,
+                        borderColor: '#f1c40f',
+                        backgroundColor: 'rgba(241, 196, 15, 0.3)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: '#3e5480' },
+                            ticks: { color: '#e0e0e0' }
+                        },
+                        x: {
+                            grid: { color: '#3e5480' },
+                            ticks: { color: '#e0e0e0' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1b263b',
+                            titleColor: '#f1c40f',
+                            bodyColor: '#e0e0e0'
+                        }
+                    },
+                    animation: { duration: 1500, easing: 'easeOutBounce' },
+                    interaction: {
+                        mode: 'nearest',
+                        intersect: false
+                    }
+                }
+            });
+        }
+
+        function changeTimeframe(newTimeframe) {
+            timeframe = newTimeframe;
+            updateChart();
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.trade-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('trade-form-content').querySelector('.trade-button').textContent = tab === 'buy' ? 'Provést nákup 📈' : 'Provést prodej 📉';
+        }
+
+        function switchMarketTab(tab) {
+            document.querySelectorAll('.market-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const marketContent = document.getElementById('market-content');
+            if (tab === 'stocks') {
+                marketContent.innerHTML = `
+                    <div class="market-items">
+                        <div class="market-item" data-asset="AAPL">
+                            <h3>Apple (AAPL)</h3>
+                            <p>Cena: <span class="price">4180.25 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('AAPL')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="TSLA">
+                            <h3>Tesla (TSLA)</h3>
+                            <p>Cena: <span class="price">5500.75 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('TSLA')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="MSFT">
+                            <h3>Microsoft (MSFT)</h3>
+                            <p>Cena: <span class="price">9020.50 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('MSFT')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="GOOGL">
+                            <h3>Google (GOOGL)</h3>
+                            <p>Cena: <span class="price">3100.15 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('GOOGL')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="AMZN">
+                            <h3>Amazon (AMZN)</h3>
+                            <p>Cena: <span class="price">3600.30 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('AMZN')">Vybrat</button>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'crypto') {
+                marketContent.innerHTML = `
+                    <div class="market-items">
+                        <div class="market-item" data-asset="BTC">
+                            <h3>Bitcoin (BTC)</h3>
+                            <p>Cena: <span class="price">1320000.45 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('BTC')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="ETH">
+                            <h3>Ethereum (ETH)</h3>
+                            <p>Cena: <span class="price">66000.82 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('ETH')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="BNB">
+                            <h3>Binance Coin (BNB)</h3>
+                            <p>Cena: <span class="price">12100.65 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('BNB')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="XRP">
+                            <h3>Ripple (XRP)</h3>
+                            <p>Cena: <span class="price">13.24 Kč</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('XRP')">Vybrat</button>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'indices') {
+                marketContent.innerHTML = `
+                    <div class="market-items">
+                        <div class="market-item" data-asset="SP500">
+                            <h3>S&P 500</h3>
+                            <p>Cena: <span class="price">5600.32</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('SP500')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="NASDAQ">
+                            <h3>NASDAQ</h3>
+                            <p>Cena: <span class="price">18200.15</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('NASDAQ')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="DAX">
+                            <h3>DAX</h3>
+                            <p>Cena: <span class="price">18500.75</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('DAX')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="FTSE100">
+                            <h3>FTSE 100</h3>
+                            <p>Cena: <span class="price">8300.45</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('FTSE100')">Vybrat</button>
+                        </div>
+                        <div class="market-item" data-asset="N225">
+                            <h3>Nikkei 225</h3>
+                            <p>Cena: <span class="price">39200.12</span></p>
+                            <p class="change">0%</p>
+                            <button onclick="selectAsset('N225')">Vybrat</button>
+                        </div>
+                    </div>
+                `;
+            }
+            updatePrices();
+        }
+
+        function selectAsset(asset) {
+            document.getElementById('trade-asset').value = asset;
+            document.getElementById('asset-selector').value = asset;
+            updateChart();
+        }
+
+        function executeTrade() {
+            const amount = parseFloat(document.getElementById('trade-amount').value);
+            const asset = document.getElementById('trade-asset').value;
+            const action = document.querySelector('.trade-tab.active').textContent === 'Nákup' ? 'Nákup' : 'Prodej';
+            const price = assetData[asset].price;
+            const quantity = amount / price;
+
+            if (isNaN(amount) || amount < 100) {
+                alert('Zadej platnou částku (minimálně 100 Kč).');
+                return;
+            }
+
+            if (action === 'Nákup') {
+                if (amount > balance) {
+                    alert('Nedostatek prostředků na zůstatku!');
+                    return;
+                }
+                balance -= amount;
+                portfolioValue += amount;
+                if (portfolio[asset]) {
+                    portfolio[asset].quantity += quantity;
+                    portfolio[asset].value += amount;
+                } else {
+                    portfolio[asset] = { quantity: quantity, value: amount };
+                }
+                showPushNotification(`Úspěšně jsi koupil ${asset} za ${amount.toFixed(2)} Kč!`);
+
+                // Upozornění chatbota
+                const messages = document.getElementById('chatbot-messages');
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chatbot-message bot-message';
+                botMessage.textContent = `Právě jsi koupil ${asset} za ${amount.toFixed(2)} Kč. Dobrá investice! Chceš radu, co dál?`;
+                messages.appendChild(botMessage);
+                messages.scrollTop = messages.scrollHeight;
+            } else {
+                if (!portfolio[asset] || portfolio[asset].value < amount) {
+                    alert('Nemáš dostatek tohoto aktiva k prodeji!');
+                    return;
+                }
+                balance += amount;
+                portfolioValue -= amount;
+                portfolio[asset].value -= amount;
+                portfolio[asset].quantity -= quantity;
+                if (portfolio[asset].value <= 0) delete portfolio[asset];
+                showPushNotification(`Úspěšně jsi prodal ${asset} za ${amount.toFixed(2)} Kč!`);
+
+                // Upozornění chatbota
+                const messages = document.getElementById('chatbot-messages');
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chatbot-message bot-message';
+                botMessage.textContent = `Právě jsi prodal ${asset} za ${amount.toFixed(2)} Kč. Dobře jsi to načasoval? Chceš radu, co koupit dál?`;
+                messages.appendChild(botMessage);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            // Aktualizace zobrazení
+            document.getElementById('balance').textContent = `${balance.toFixed(2)} Kč`;
+            document.getElementById('portfolio-value').textContent = `${portfolioValue.toFixed(2)} Kč`;
+            const change = ((portfolioValue - 175000) / 175000 * 100).toFixed(2);
+            document.getElementById('daily-change').textContent = `${change}% (${(portfolioValue - 175000).toFixed(2)} Kč)`;
+            document.getElementById('daily-change').className = change >= 0 ? 'positive' : 'negative';
+
+            // Aktualizace portfolia
+            const portfolioItems = document.getElementById('portfolio-items');
+            portfolioItems.innerHTML = '';
+            Object.keys(portfolio).forEach(asset => {
+                const change = ((portfolio[asset].value - (portfolio[asset].quantity * assetData[asset][timeframe][0])) / (portfolio[asset].quantity * assetData[asset][timeframe][0]) * 100).toFixed(2);
+                portfolioItems.innerHTML += `
+                    <div class="portfolio-item" data-asset="${asset}">
+                        <h3>${asset}</h3>
+                        <p>Hodnota: ${portfolio[asset].value.toFixed(2)} Kč</p>
+                        <p class="${change >= 0 ? 'positive' : 'negative'}">${change}%</p>
+                    </div>
+                `;
+            });
+
+            // Přidání do historie transakcí
+            const now = new Date();
+            const transactionList = document.getElementById('transactions-list');
+            transactionList.innerHTML = `
+                <div class="transaction">
+                    <p>${action} ${asset} – ${amount.toFixed(2)} Kč</p>
+                    <p>${now.toLocaleDateString('cs-CZ')} ${now.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'})}</p>
+                    <p class="${change >= 0 ? 'positive' : 'negative'}">${change}%</p>
+                </div>
+            ` + transactionList.innerHTML;
+
+            // Uložení dat do sessionStorage
+            const username = localStorage.getItem('username') || 'Investor123';
+            const userData = { balance, portfolioValue, portfolio };
+            sessionStorage.setItem(`userData_${username}`, JSON.stringify(userData));
+        }
+
+        // Přepínání světlého/tmavého režimu
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+        }
+
+        // Funkce pro odhlášení
+        function logout() {
+            const choice = confirm('Chcete se odhlásit? Vyberte:\nOK - Přejít na úvodní stránku (index.html)\nStorno - Přejít na přihlášení (Reg.html)');
+            if (choice) {
+                window.location.href = 'index.html';
+            } else {
+                window.location.href = 'Reg.html';
+            }
+            localStorage.removeItem('username');
+            sessionStorage.clear();
+        }
+
+        // Chatbot funkce
+        function toggleChatbot() {
+            const chatbotBody = document.getElementById('chatbot-body');
+            const toggleIcon = document.querySelector('.chatbot-toggle');
+            if (chatbotBody.style.display === 'none' || !chatbotBody.style.display) {
+                chatbotBody.style.display = 'block';
+                toggleIcon.innerHTML = '▼';
+            } else {
+                chatbotBody.style.display = 'none';
+                toggleIcon.innerHTML = '▲';
+            }
+        }
+
+        function sendChatbotMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messages = document.getElementById('chatbot-messages');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chatbot-message user-message';
+            userMessage.textContent = message;
+            messages.appendChild(userMessage);
+
+            // AI odpověď
+            const botMessage = document.createElement('div');
+            botMessage.className = 'chatbot-message bot-message';
+            botMessage.textContent = getBotResponse(message);
+            messages.appendChild(botMessage);
+
+            // Scroll dolů
+            messages.scrollTop = messages.scrollHeight;
+            input.value = '';
+        }
+
+        function getBotResponse(message) {
+            message = message.toLowerCase();
+            if (message.includes('zůstatek')) {
+                return `Tvůj zůstatek je ${balance.toFixed(2)} Kč.`;
+            } else if (message.includes('portfolio') || message.includes('hodnota portfolia')) {
+                return `Hodnota tvého portfolia je ${portfolioValue.toFixed(2)} Kč.`;
+            } else if (message.includes('bitcoin') || message.includes('btc')) {
+                return `Bitcoin (BTC) je kryptoměna. Aktuální cena je ${assetData['BTC'].price.toFixed(2)} Kč. Poslední změna: ${((assetData['BTC'].price - assetData['BTC'][timeframe][0]) / assetData['BTC'][timeframe][0] * 100).toFixed(2)}%.`;
+            } else if (message.includes('kolik mám')) {
+                let response = 'V tvém portfoliu máš:\n';
+                Object.keys(portfolio).forEach(asset => {
+                    response += `${asset}: ${portfolio[asset].value.toFixed(2)} Kč\n`;
+                });
+                return response || 'Zatím nemáš žádná aktiva v portfoliu.';
+            } else if (message.includes('jak se máš')) {
+                return 'Jsem AI chatbot, mám se skvěle! Jak ti mohu pomoci?';
+            } else if (message.includes('co je') || message.includes('kdo je')) {
+                if (message.includes('apple') || message.includes('aapl')) {
+                    return 'Apple (AAPL) je technologická společnost, která vyrábí iPhone, iPad a další zařízení. Aktuální cena akcií je ' + assetData['AAPL'].price.toFixed(2) + ' Kč.';
+                } else if (message.includes('tesla') || message.includes('tsla')) {
+                    return 'Tesla (TSLA) je automobilka zaměřená na elektromobily, vede ji Elon Musk. Aktuální cena akcií je ' + assetData['TSLA'].price.toFixed(2) + ' Kč.';
+                } else if (message.includes('s&p 500') || message.includes('sp500')) {
+                    return 'S&P 500 je akciový index, který sleduje 500 největších amerických společností. Aktuální hodnota je ' + assetData['SP500'].price.toFixed(2) + '.';
+                } else {
+                    return 'Promiň, nevím, co nebo kdo to je. Zkus se zeptat na něco jiného, třeba na cenu aktiva!';
+                }
+            } else if (message.includes('jak investovat') || message.includes('investice')) {
+                return 'Investování je o diversifikaci – nerozkládej všechny prostředky do jednoho aktiva. Sleduj trendy, např. BTC právě roste o ' + ((assetData['BTC'].price - assetData['BTC'][timeframe][0]) / assetData['BTC'][timeframe][0] * 100).toFixed(2) + '%. Chceš konkrétní tip?';
+            } else if (message.includes('tip') || message.includes('doporuč')) {
+                let highestChange = -Infinity;
+                let bestAsset = null;
+                Object.keys(assetData).forEach(asset => {
+                    const change = ((assetData[asset].price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0]) * 100;
+                    if (change > highestChange) {
+                        highestChange = change;
+                        bestAsset = asset;
+                    }
+                });
+                return `Doporučuji sledovat ${bestAsset}, které roste o ${highestChange.toFixed(2)}%. Možná je teď dobrý čas koupit!`;
+            } else if (message.includes('co koupit') || message.includes('co bych měl koupit')) {
+                let highestChange = -Infinity;
+                let bestAsset = null;
+                Object.keys(assetData).forEach(asset => {
+                    const change = ((assetData[asset].price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0]) * 100;
+                    if (change > highestChange) {
+                        highestChange = change;
+                        bestAsset = asset;
+                    }
+                });
+                return `Aktuálně roste ${bestAsset} o ${highestChange.toFixed(2)}%. Mohl bys zvážit jeho nákup.`;
+            } else if (message.includes('co prodat') || message.includes('co bych měl prodat')) {
+                let lowestChange = Infinity;
+                let worstAsset = null;
+                Object.keys(portfolio).forEach(asset => {
+                    const change = ((portfolio[asset].value - (portfolio[asset].quantity * assetData[asset][timeframe][0])) / (portfolio[asset].quantity * assetData[asset][timeframe][0]) * 100);
+                    if (change < lowestChange) {
+                        lowestChange = change;
+                        worstAsset = asset;
+                    }
+                });
+                return worstAsset ? `V tvém portfoliu klesá ${worstAsset} o ${Math.abs(lowestChange).toFixed(2)}%. Možná bys mohl zvážit jeho prodej.` : 'Zatím nemáš žádná aktiva, která by stála za prodej.';
+            } else if (message.includes('dík') || message.includes('děkuji')) {
+                return 'Rád pomohu! Pokud máš další otázku, sem s ní!';
+            } else if (message.includes('čas') || message.includes('kolik je hodin')) {
+                const now = new Date();
+                return `Je ${now.toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}.`;
+            } else if (message.includes('počasí')) {
+                return 'Bohužel nemám přístup k aktuálním datům o počasí, ale doporučuji se podívat na tvůj oblíbený web o počasí! Jak jinak ti mohu pomoci?';
+            } else {
+                return 'Promiň, na tohle zatím neumím odpovědět. Zkus se zeptat na zůstatek, portfolio, cenu aktiva nebo třeba na investiční tip!';
+            }
+        }
+
+        setInterval(updatePrices, 3000); // Zkrácení intervalu na 3 sekundy pro rychlejší změny
+        updatePrices();
+    </script>
+</body>
+</html>
