@@ -7,9 +7,12 @@
     <link rel="stylesheet" href="obchod-styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Přidání pluginů pro Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 </head>
 <body class="dark-mode">
-    <!-- Navigace (inspirováno eToro) -->
+    <!-- Navigace -->
     <header>
         <nav class="trading-nav">
             <div class="nav-left">
@@ -37,8 +40,8 @@
     <!-- Live Ticker -->
     <div class="live-ticker">
         <div class="ticker-content">
-            <span>S&P 500: 5,600.32 (+0.45%) | NASDAQ: 18,200.15 (+0.62%) | DAX: 18,500.75 (+0.32%) | FTSE 100: 8,300.45 (-0.15%) | Nikkei 225: 39,200.12 (+0.28%) | BTC: 1,320,000.45 Kč (-0.12%) | ETH: 66,000.82 Kč (+1.15%) | AAPL: 4,180.25 Kč (+0.25%)</span>
-            <span>S&P 500: 5,600.32 (+0.45%) | NASDAQ: 18,200.15 (+0.62%) | DAX: 18,500.75 (+0.32%) | FTSE 100: 8,300.45 (-0.15%) | Nikkei 225: 39,200.12 (+0.28%) | BTC: 1,320,000.45 Kč (-0.12%) | ETH: 66,000.82 Kč (+1.15%) | AAPL: 4,180.25 Kč (+0.25%)</span>
+            <span id="ticker-data">S&P 500: 5,600.32 (+0.45%) | NASDAQ: 18,200.15 (+0.62%) | DAX: 18,500.75 (+0.32%) | FTSE 100: 8,300.45 (-0.15%) | Nikkei 225: 39,200.12 (+0.28%) | BTC: 1,320,000.45 Kč (-0.12%) | ETH: 66,000.82 Kč (+1.15%) | AAPL: 4,180.25 Kč (+0.25%)</span>
+            <span id="ticker-data-duplicate">S&P 500: 5,600.32 (+0.45%) | NASDAQ: 18,200.15 (+0.62%) | DAX: 18,500.75 (+0.32%) | FTSE 100: 8,300.45 (-0.15%) | Nikkei 225: 39,200.12 (+0.28%) | BTC: 1,320,000.45 Kč (-0.12%) | ETH: 66,000.82 Kč (+1.15%) | AAPL: 4,180.25 Kč (+0.25%)</span>
         </div>
     </div>
 
@@ -56,7 +59,7 @@
                         </div>
                         <div class="stat">
                             <span>Hodnota portfolia:</span>
-                            <span id="portfolio-value">175,000.00 Kč</span>
+                            <span id="portfolio-value">100,000.00 Kč</span>
                         </div>
                         <div class="stat">
                             <span>Změna za 24h:</span>
@@ -72,15 +75,15 @@
                 <div class="overview-cards">
                     <div class="overview-card">
                         <h3>Největší růst</h3>
-                        <p>ETH: <span class="positive">+1.15%</span></p>
+                        <p id="top-gainer">ETH: <span class="positive">+1.15%</span></p>
                     </div>
                     <div class="overview-card">
                         <h3>Největší pokles</h3>
-                        <p>FTSE 100: <span class="negative">-0.15%</span></p>
+                        <p id="top-loser">FTSE 100: <span class="negative">-0.15%</span></p>
                     </div>
                     <div class="overview-card">
                         <h3>Nejvíce obchodováno</h3>
-                        <p>BTC: 1,320,000.45 Kč</p>
+                        <p id="top-traded">BTC: 1,320,000.45 Kč</p>
                     </div>
                 </div>
             </div>
@@ -117,6 +120,12 @@
                                 <button onclick="changeTimeframe('1M')">1M</button>
                                 <button onclick="changeTimeframe('3M')">3M</button>
                                 <button onclick="changeTimeframe('1Y')">1Y</button>
+                            </div>
+                            <!-- Přidání tlačítek pro typ grafu a reset zoomu -->
+                            <div class="chart-type-buttons">
+                                <button onclick="toggleChartType('line')">Čárový</button>
+                                <button onclick="toggleChartType('bar')">Sloupcový</button>
+                                <button onclick="resetZoom()">Reset Zoom</button>
                             </div>
                         </div>
                         <div class="chart-container">
@@ -259,21 +268,29 @@
                 </div>
             </div>
 
+            <!-- Doporučené investice -->
+            <div class="recommended-investments">
+                <h2>Doporučené investice 📈</h2>
+                <div class="recommendations-grid" id="recommendations-grid">
+                    <!-- Doporučení budou generována JavaScriptem -->
+                </div>
+            </div>
+
             <!-- Statistiky portfolia -->
             <div class="portfolio-stats">
                 <h2>Statistiky portfolia 📊</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Největší zisk</h3>
-                        <p>AAPL: <span class="positive">+12.34%</span></p>
+                        <p id="portfolio-top-gainer">AAPL: <span class="positive">+12.34%</span></p>
                     </div>
                     <div class="stat-card">
                         <h3>Největší ztráta</h3>
-                        <p>BTC: <span class="negative">-5.67%</span></p>
+                        <p id="portfolio-top-loser">BTC: <span class="negative">-5.67%</span></p>
                     </div>
                     <div class="stat-card">
                         <h3>Celkový výnos</h3>
-                        <p><span class="positive">+8.92%</span></p>
+                        <p id="portfolio-total-return"><span class="positive">+8.92%</span></p>
                     </div>
                 </div>
             </div>
@@ -318,6 +335,25 @@
                         <h3>Ethereum (ETH)</h3>
                         <p>Hodnota: 20000.00 Kč</p>
                         <p class="positive">+8.12%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rychlý přehled transakcí -->
+            <div class="quick-transactions">
+                <h2>Rychlý přehled transakcí 🕒</h2>
+                <div class="quick-transactions-list" id="quick-transactions-list">
+                    <div class="transaction">
+                        <p>Nákup AAPL – 10 000.00 Kč</p>
+                        <p class="positive">+5.23%</p>
+                    </div>
+                    <div class="transaction">
+                        <p>Prodej BTC – 15 000.00 Kč</p>
+                        <p class="negative">-3.45%</p>
+                    </div>
+                    <div class="transaction">
+                        <p>Nákup ETH – 8 000.00 Kč</p>
+                        <p class="positive">+10.78%</p>
                     </div>
                 </div>
             </div>
@@ -386,17 +422,18 @@
         </div>
     </footer>
 
-    <!-- JavaScript pro interaktivitu -->
+    <!-- JavaScript -->
     <script>
         let priceChart;
         let balance = 150000.00;
-        let portfolioValue = 175000.00;
+        let portfolioValue = 100000.00;
         let portfolio = {
             'AAPL': { quantity: 10, value: 50000.00 },
             'BTC': { quantity: 1, value: 30000.00 },
             'ETH': { quantity: 2, value: 20000.00 }
         };
         let timeframe = '1D';
+        let chartType = 'line'; // Výchozí typ grafu
         let assetData = {
             'AAPL': {
                 price: 4180.25,
@@ -575,17 +612,20 @@
                     `;
                 });
             }
+
+            // Inicializace grafu
+            updateChart();
         });
 
         // Otevírací hodiny trhu (NYSE/NASDAQ: 9:30–16:00 EST, což je 15:30–22:00 CET)
         function isMarketOpen() {
             const now = new Date();
-            const cetOffset = 1; // CET je UTC+1
+            const cetOffset = 1;
             const hours = now.getUTCHours() + cetOffset;
             const minutes = now.getUTMinutes();
             const day = now.getUTCDay();
-            const marketStart = 15.5; // 15:30 CET
-            const marketEnd = 22; // 22:00 CET
+            const marketStart = 15.5;
+            const marketEnd = 22;
             return day >= 1 && day <= 5 && hours >= marketStart && (hours < marketEnd || (hours === marketEnd && minutes === 0));
         }
 
@@ -643,21 +683,27 @@
             `;
             notificationContainer.appendChild(notification);
 
-            // Automatické odstranění po 5 sekundách
             setTimeout(() => {
                 notification.remove();
             }, 5000);
         }
 
-        // Fiktivní simulace burzy s většími výkyvy
+        // Funkce pro aktualizaci cen
         function updatePrices() {
             const marketOpen = isMarketOpen();
+            let topGainer = { asset: null, change: -Infinity };
+            let topLoser = { asset: null, change: Infinity };
+            let topTraded = { asset: null, volume: -Infinity };
+
+            // Aktualizace tickeru
+            let tickerText = '';
+
             Object.keys(assetData).forEach(asset => {
                 const item = document.querySelector(`.market-item[data-asset="${asset}"]`);
                 let price = assetData[asset].price;
 
+                // Simulace větších výkyvů (±5% změna)
                 if (marketOpen || asset === 'BTC' || asset === 'ETH' || asset === 'BNB' || asset === 'XRP' || asset.startsWith('SP500') || asset.startsWith('NASDAQ') || asset.startsWith('DAX') || asset.startsWith('FTSE100') || asset.startsWith('N225')) {
-                    // Větší výkyvy (±5% změna namísto ±2%)
                     const fluctuation = (Math.random() - 0.5) * 0.05 * price;
                     price += fluctuation;
                     assetData[asset].price = price;
@@ -700,8 +746,23 @@
                     indexCard.querySelector('p').innerHTML = `${price.toFixed(2)} <span class="${change >= 0 ? 'positive' : 'negative'}">${change}%</span>`;
                 }
 
+                // Aktualizace tickeru
+                tickerText += `${asset}: ${price.toFixed(2)} ${asset.includes('Kč') ? 'Kč' : ''} (${change >= 0 ? '+' : ''}${change}%) | `;
+
+                // Sledování top gainer, loser a traded
+                if (parseFloat(change) > topGainer.change) {
+                    topGainer = { asset, change: parseFloat(change) };
+                }
+                if (parseFloat(change) < topLoser.change) {
+                    topLoser = { asset, change: parseFloat(change) };
+                }
+                const volume = Math.random() * 1000000; // Simulace objemu obchodu
+                if (volume > topTraded.volume) {
+                    topTraded = { asset, volume };
+                }
+
                 // Push notifikace při větší změně
-                if (Math.abs(change) > 3) { // Zvýšený práh pro notifikace
+                if (Math.abs(change) > 3) {
                     const now = new Date();
                     const notificationList = document.getElementById('notification-list');
                     notificationList.innerHTML = `
@@ -711,10 +772,8 @@
                         </div>
                     ` + notificationList.innerHTML;
 
-                    // Push notifikace
                     showPushNotification(`${asset} se změnil o ${change}%!`);
 
-                    // Upozornění chatbota
                     const messages = document.getElementById('chatbot-messages');
                     const botMessage = document.createElement('div');
                     botMessage.className = 'chatbot-message bot-message';
@@ -722,30 +781,83 @@
                     messages.appendChild(botMessage);
                     messages.scrollTop = messages.scrollHeight;
                 }
-
-                updateChart();
             });
+
+            // Aktualizace tickeru
+            tickerText = tickerText.slice(0, -2); // Odstranění posledního "| "
+            document.getElementById('ticker-data').textContent = tickerText;
+            document.getElementById('ticker-data-duplicate').textContent = tickerText;
+
+            // Aktualizace rychlého přehledu trhu
+            document.getElementById('top-gainer').innerHTML = `${topGainer.asset}: <span class="positive">+${topGainer.change.toFixed(2)}%</span>`;
+            document.getElementById('top-loser').innerHTML = `${topLoser.asset}: <span class="negative">${topLoser.change.toFixed(2)}%</span>`;
+            document.getElementById('top-traded').textContent = `${topTraded.asset}: ${assetData[topTraded.asset].price.toFixed(2)} Kč`;
+
+            // Aktualizace doporučených investic
+            const recommendationsGrid = document.getElementById('recommendations-grid');
+            recommendationsGrid.innerHTML = '';
+            const sortedAssets = Object.keys(assetData).sort((a, b) => {
+                const changeA = ((assetData[a].price - assetData[a][timeframe][0]) / assetData[a][timeframe][0] * 100);
+                const changeB = ((assetData[b].price - assetData[b][timeframe][0]) / assetData[b][timeframe][0] * 100);
+                return changeB - changeA;
+            });
+            sortedAssets.slice(0, 3).forEach(asset => {
+                const change = ((assetData[asset].price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0] * 100).toFixed(2);
+                recommendationsGrid.innerHTML += `
+                    <div class="recommendation-card" data-asset="${asset}">
+                        <h3>${asset}</h3>
+                        <p>Růst: <span class="${change >= 0 ? 'positive' : 'negative'}">${change}%</span></p>
+                        <button onclick="selectAsset('${asset}')">Vybrat</button>
+                    </div>
+                `;
+            });
+
+            updateChart();
         }
 
-        // Aktualizace grafu
+        // Funkce pro přepínání typu grafu
+        function toggleChartType(type) {
+            chartType = type;
+            updateChart();
+        }
+
+        // Funkce pro reset zoomu
+        function resetZoom() {
+            if (priceChart) {
+                priceChart.resetZoom();
+            }
+        }
+
+        // Interaktivní graf s vylepšenou interaktivitou
         function updateChart() {
             const asset = document.getElementById('asset-selector').value;
             const data = assetData[asset][timeframe];
             if (priceChart) priceChart.destroy();
             const ctx = document.getElementById('priceChart').getContext('2d');
+
+            // Najdeme maximální a minimální hodnotu pro anotace
+            const maxValue = Math.max(...data);
+            const minValue = Math.min(...data);
+            const maxIndex = data.indexOf(maxValue);
+            const minIndex = data.indexOf(minValue);
+
             priceChart = new Chart(ctx, {
-                type: 'line',
+                type: chartType, // Dynamický typ grafu
                 data: {
                     labels: getTimeLabels(timeframe, data.length),
                     datasets: [{
                         label: asset,
                         data: data,
                         borderColor: '#f1c40f',
-                        backgroundColor: 'rgba(241, 196, 15, 0.3)',
-                        tension: 0.4,
-                        fill: true,
+                        backgroundColor: chartType === 'line' ? 'rgba(241, 196, 15, 0.3)' : '#f1c40f',
+                        tension: chartType === 'line' ? 0.4 : 0,
+                        fill: chartType === 'line' ? true : false,
                         pointRadius: 5,
-                        pointHoverRadius: 8
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#f1c40f',
+                        pointBorderColor: '#1b263b',
+                        pointHoverBackgroundColor: '#e67e22',
+                        pointHoverBorderColor: '#ffffff'
                     }]
                 },
                 options: {
@@ -762,17 +874,104 @@
                         }
                     },
                     plugins: {
-                        legend: { display: false },
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#e0e0e0',
+                                font: { size: 14 },
+                                usePointStyle: true
+                            },
+                            onClick: (e, legendItem, legend) => {
+                                const index = legendItem.datasetIndex;
+                                const ci = legend.chart;
+                                const meta = ci.getDatasetMeta(index);
+                                meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+                                ci.update();
+                            }
+                        },
                         tooltip: {
                             enabled: true,
                             mode: 'index',
                             intersect: false,
                             backgroundColor: '#1b263b',
                             titleColor: '#f1c40f',
-                            bodyColor: '#e0e0e0'
+                            bodyColor: '#e0e0e0',
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return tooltipItems[0].label;
+                                },
+                                label: function(context) {
+                                    const value = context.parsed.y.toFixed(2);
+                                    const prevValue = context.dataset.data[context.dataIndex - 1] || context.dataset.data[0];
+                                    const change = ((value - prevValue) / prevValue * 100).toFixed(2);
+                                    return [
+                                        `Cena: ${value} ${asset.includes('Kč') ? 'Kč' : ''}`,
+                                        `Změna: ${change >= 0 ? '+' : ''}${change}%`
+                                    ];
+                                }
+                            }
+                        },
+                        zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                    modifierKey: 'ctrl'
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            },
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                maxPoint: {
+                                    type: 'point',
+                                    xValue: maxIndex,
+                                    yValue: maxValue,
+                                    backgroundColor: '#28a745',
+                                    borderColor: '#ffffff',
+                                    radius: 8,
+                                    borderWidth: 2,
+                                    label: {
+                                        enabled: true,
+                                        content: `Max: ${maxValue.toFixed(2)}`,
+                                        position: 'top',
+                                        backgroundColor: '#28a745',
+                                        color: '#ffffff'
+                                    }
+                                },
+                                minPoint: {
+                                    type: 'point',
+                                    xValue: minIndex,
+                                    yValue: minValue,
+                                    backgroundColor: '#dc3545',
+                                    borderColor: '#ffffff',
+                                    radius: 8,
+                                    borderWidth: 2,
+                                    label: {
+                                        enabled: true,
+                                        content: `Min: ${minValue.toFixed(2)}`,
+                                        position: 'bottom',
+                                        backgroundColor: '#dc3545',
+                                        color: '#ffffff'
+                                    }
+                                }
+                            }
                         }
                     },
-                    animation: { duration: 1500, easing: 'easeOutBounce' },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutBounce',
+                        onComplete: function() {
+                            const chart = this;
+                            chart.options.animation.duration = 0;
+                        }
+                    },
                     interaction: {
                         mode: 'nearest',
                         intersect: false
@@ -932,7 +1131,6 @@
                 }
                 showPushNotification(`Úspěšně jsi koupil ${asset} za ${amount.toFixed(2)} Kč!`);
 
-                // Upozornění chatbota
                 const messages = document.getElementById('chatbot-messages');
                 const botMessage = document.createElement('div');
                 botMessage.className = 'chatbot-message bot-message';
@@ -951,7 +1149,6 @@
                 if (portfolio[asset].value <= 0) delete portfolio[asset];
                 showPushNotification(`Úspěšně jsi prodal ${asset} za ${amount.toFixed(2)} Kč!`);
 
-                // Upozornění chatbota
                 const messages = document.getElementById('chatbot-messages');
                 const botMessage = document.createElement('div');
                 botMessage.className = 'chatbot-message bot-message';
@@ -960,14 +1157,12 @@
                 messages.scrollTop = messages.scrollHeight;
             }
 
-            // Aktualizace zobrazení
             document.getElementById('balance').textContent = `${balance.toFixed(2)} Kč`;
             document.getElementById('portfolio-value').textContent = `${portfolioValue.toFixed(2)} Kč`;
             const change = ((portfolioValue - 175000) / 175000 * 100).toFixed(2);
             document.getElementById('daily-change').textContent = `${change}% (${(portfolioValue - 175000).toFixed(2)} Kč)`;
             document.getElementById('daily-change').className = change >= 0 ? 'positive' : 'negative';
 
-            // Aktualizace portfolia
             const portfolioItems = document.getElementById('portfolio-items');
             portfolioItems.innerHTML = '';
             Object.keys(portfolio).forEach(asset => {
@@ -981,30 +1176,38 @@
                 `;
             });
 
-            // Přidání do historie transakcí
             const now = new Date();
             const transactionList = document.getElementById('transactions-list');
-            transactionList.innerHTML = `
+            const quickTransactionsList = document.getElementById('quick-transactions-list');
+            const transactionHTML = `
                 <div class="transaction">
                     <p>${action} ${asset} – ${amount.toFixed(2)} Kč</p>
                     <p>${now.toLocaleDateString('cs-CZ')} ${now.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'})}</p>
                     <p class="${change >= 0 ? 'positive' : 'negative'}">${change}%</p>
                 </div>
-            ` + transactionList.innerHTML;
-
-            // Uložení dat do sessionStorage
-            const username = localStorage.getItem('username') || 'Investor123';
-            const userData = { balance, portfolioValue, portfolio };
-            sessionStorage.setItem(`userData_${username}`, JSON.stringify(userData));
+            `;
+            const quickTransactionHTML = `
+        <div class="transaction">
+            <p>${action} ${asset} – ${amount.toFixed(2)} Kč</p>
+            <p class="${change >= 0 ? 'positive' : 'negative'}">${change}%</p>
+        </div>
+        `;
+        transactionList.innerHTML = transactionHTML + transactionList.innerHTML;
+        quickTransactionsList.innerHTML = quickTransactionHTML + quickTransactionsList.innerHTML;
+        if (quickTransactionsList.children.length > 3) {
+            quickTransactionsList.removeChild(quickTransactionsList.lastChild);
         }
 
-        // Přepínání světlého/tmavého režimu
+        const username = localStorage.getItem('username') || 'Investor123';
+        const userData = { balance, portfolioValue, portfolio };
+        sessionStorage.setItem(`userData_${username}`, JSON.stringify(userData));
+        }
+
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             document.body.classList.toggle('light-mode');
         }
 
-        // Funkce pro odhlášení
         function logout() {
             const choice = confirm('Chcete se odhlásit? Vyberte:\nOK - Přejít na úvodní stránku (index.html)\nStorno - Přejít na přihlášení (Reg.html)');
             if (choice) {
@@ -1016,16 +1219,20 @@
             sessionStorage.clear();
         }
 
-        // Chatbot funkce
         function toggleChatbot() {
             const chatbotBody = document.getElementById('chatbot-body');
             const toggleIcon = document.querySelector('.chatbot-toggle');
             if (chatbotBody.style.display === 'none' || !chatbotBody.style.display) {
                 chatbotBody.style.display = 'block';
                 toggleIcon.innerHTML = '▼';
+                chatbotBody.classList.add('chatbot-open');
             } else {
-                chatbotBody.style.display = 'none';
-                toggleIcon.innerHTML = '▲';
+                chatbotBody.classList.remove('chatbot-open');
+                chatbotBody.classList.add('chatbot-close');
+                setTimeout(() => {
+                    chatbotBody.style.display = 'none';
+                    toggleIcon.innerHTML = '▲';
+                }, 300);
             }
         }
 
@@ -1040,13 +1247,11 @@
             userMessage.textContent = message;
             messages.appendChild(userMessage);
 
-            // AI odpověď
             const botMessage = document.createElement('div');
             botMessage.className = 'chatbot-message bot-message';
             botMessage.textContent = getBotResponse(message);
             messages.appendChild(botMessage);
 
-            // Scroll dolů
             messages.scrollTop = messages.scrollHeight;
             input.value = '';
         }
@@ -1083,7 +1288,7 @@
                 let highestChange = -Infinity;
                 let bestAsset = null;
                 Object.keys(assetData).forEach(asset => {
-                    const change = ((assetData[asset].price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0]) * 100;
+                    const change = ((assetData[asset].price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0] * 100);
                     if (change > highestChange) {
                         highestChange = change;
                         bestAsset = asset;
@@ -1094,7 +1299,7 @@
                 let highestChange = -Infinity;
                 let bestAsset = null;
                 Object.keys(assetData).forEach(asset => {
-                    const change = ((assetData[asset].price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0]) * 100;
+                    const change = ((assetData[asset].price - assetData[asset][timeframe][0]) / assetData[asset][timeframe][0] * 100);
                     if (change > highestChange) {
                         highestChange = change;
                         bestAsset = asset;
@@ -1124,8 +1329,9 @@
             }
         }
 
-        setInterval(updatePrices, 3000); // Zkrácení intervalu na 3 sekundy pro rychlejší změny
+        // Spuštění aktualizace cen
+        setInterval(updatePrices, 3000);
         updatePrices();
-    </script>
+</script>
 </body>
 </html>
