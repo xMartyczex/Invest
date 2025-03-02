@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="reg-styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="dark-mode">
+  <!-- Navigace -->
   <header>
     <nav>
       <div class="logo">Investice Snadno</div>
@@ -19,9 +20,20 @@
         <li><a href="index.html#novinky">Novinky</a></li>
         <li><a href="index.html#kontakt">Kontakt</a></li>
       </ul>
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
     </nav>
   </header>
 
+  <!-- Dekorativní bubliny -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Registrační sekce -->
   <section id="registration">
     <div class="reg-container">
       <h1>Registrace do systému 📝</h1>
@@ -31,7 +43,7 @@
           <label for="username">Uživatelské jméno:</label>
           <input type="text" id="username" placeholder="např. investor123" required>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="email-group">
           <label for="email">E-mail:</label>
           <input type="email" id="email" placeholder="např. jmeno@seznam.cz" required>
         </div>
@@ -39,9 +51,36 @@
           <label for="password">Heslo:</label>
           <input type="password" id="password" placeholder="Minimálně 6 znaků" required>
         </div>
+        <!-- Vylepšená captcha -->
+        <div class="form-group captcha-container">
+          <label id="captcha-label" for="captcha"></label>
+          <div class="captcha-content">
+            <input type="text" id="captcha" placeholder="Odpověď" required>
+            <button type="button" onclick="generateCaptcha()" class="captcha-refresh">Obnovit 🔄</button>
+          </div>
+        </div>
         <button type="submit" class="reg-button">Registrovat se 🚀</button>
       </form>
       <p class="login-link">Již máš účet? <a href="#">Přihlásit se</a></p>
+    </div>
+  </section>
+
+  <!-- Infografika -->
+  <section class="info-graphic">
+    <div class="info-item">
+      <span class="icon">📈</span>
+      <h3>Zvyš svůj kapitál</h3>
+      <p>Investuj chytře a sleduj růst svých peněz!</p>
+    </div>
+    <div class="info-item">
+      <span class="icon">🔒</span>
+      <h3>Bezpečnost na prvním místě</h3>
+      <p>Tvoje data jsou u nás v bezpečí.</p>
+    </div>
+    <div class="info-item">
+      <span class="icon">🌐</span>
+      <h3>Globální trhy</h3>
+      <p>Obchoduj na světových burzách kdykoliv!</p>
     </div>
   </section>
 
@@ -57,7 +96,23 @@
   <script>
     let isLogin = false;
     let savedEmailGroup = null;
+    let captchaAnswer = 0;
 
+    // Generování náhodné captcha otázky
+    function generateCaptcha() {
+      const num1 = Math.floor(Math.random() * 20) + 1;
+      const num2 = Math.floor(Math.random() * 10) + 1;
+      const operation = Math.random() > 0.5 ? '+' : '-';
+      if (operation === '+') {
+        captchaAnswer = num1 + num2;
+        document.getElementById('captcha-label').textContent = `Ověřovací kód: Kolik je ${num1} + ${num2}?`;
+      } else {
+        captchaAnswer = num1 - num2;
+        document.getElementById('captcha-label').textContent = `Ověřovací kód: Kolik je ${num1} - ${num2}?`;
+      }
+    }
+
+    // Přepínání mezi registračním a přihlašovacím režimem
     function toggleForm(event) {
       event.preventDefault();
       const header = document.querySelector('.reg-container h1');
@@ -65,7 +120,7 @@
       const submitButton = document.querySelector('.reg-button');
 
       if (!isLogin) {
-        const emailGroup = document.getElementById('email').parentElement;
+        const emailGroup = document.getElementById('email-group');
         savedEmailGroup = emailGroup;
         emailGroup.remove();
 
@@ -89,37 +144,54 @@
         document.querySelector('.login-link a').addEventListener('click', toggleForm);
         isLogin = false;
       }
+      generateCaptcha();
     }
 
+    // Zpracování odeslání formuláře
     function handleLogin(event) {
       event.preventDefault();
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
+      const captchaInput = document.getElementById('captcha').value;
 
       if (!isLogin) {
-        // Režim registrace
-        const email = document.getElementById('email').value;
-        if (username && email && password.length >= 6) {
-          localStorage.setItem('username', username); // Uložení jména do localStorage
+        const email = document.getElementById('email')?.value;
+        if (username && email && password.length >= 6 && parseInt(captchaInput) === captchaAnswer) {
+          localStorage.setItem('username', username);
           alert('Registrace úspěšná! Přesměrovávám na Obchod...');
           window.location.href = 'Obchod.html';
         } else {
-          alert('Prosím, vyplň všechna pole správně. Heslo musí mít alespoň 6 znaků.');
+          alert('Prosím, vyplň všechna pole správně a ujisti se, že ověřovací kód je správný.');
+          generateCaptcha();
         }
       } else {
-        // Režim přihlášení
-        if (username && password.length >= 6) {
-          localStorage.setItem('username', username); // Uložení jména i při přihlášení
+        if (username && password.length >= 6 && parseInt(captchaInput) === captchaAnswer) {
+          localStorage.setItem('username', username);
           alert('Přihlášení úspěšné! Přesměrovávám do systému...');
           window.location.href = 'Obchod.html';
         } else {
-          alert('Prosím, vyplň všechna pole správně. Heslo musí mít alespoň 6 znaků.');
+          alert('Prosím, vyplň všechna pole správně. Heslo musí mít alespoň 6 znaků a ověřovací kód musí být správný.');
+          generateCaptcha();
         }
       }
     }
 
-    // Přidáme event listener na odkaz po načtení stránky
+    // Přepínání světlého/tmavého režimu
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Inicializace při načtení stránky
     document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.add('light-mode');
+      }
+      generateCaptcha();
       document.querySelector('.login-link a').addEventListener('click', toggleForm);
     });
   </script>
